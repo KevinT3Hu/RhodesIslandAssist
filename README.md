@@ -10,7 +10,7 @@ Lastest version: 0.1.0-alpha.1
 
 Lastest stable version: none
 
-Download: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/eeleases)
+Download: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/releases)
 
 ## Features
 

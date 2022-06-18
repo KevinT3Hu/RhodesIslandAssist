@@ -8,7 +8,7 @@
 
 稳定版本: 暂无
 
-下载: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/eeleases)
+下载: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/releases)
 
 ## 功能
 
