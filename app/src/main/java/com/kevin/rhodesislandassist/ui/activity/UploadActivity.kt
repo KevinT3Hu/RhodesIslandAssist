@@ -18,12 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.RhodesIslandAssistTheme
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.viewmodel.UploadViewModel
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.models.GameStage
 import com.kevin.rhodesislandassist.ui.component.widget.NumberSelector
-import java.util.function.Predicate
 
 class UploadActivity : ComponentActivity() {
 

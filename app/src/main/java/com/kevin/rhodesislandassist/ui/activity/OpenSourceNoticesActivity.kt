@@ -10,7 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.RhodesIslandAssistTheme
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.R
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 

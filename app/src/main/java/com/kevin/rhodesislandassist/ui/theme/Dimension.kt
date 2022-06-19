@@ -1,4 +1,4 @@
-package com.kevin.rhodesislandassist.ui.activity.ui.theme
+package com.kevin.rhodesislandassist.ui.theme
 
 import androidx.compose.ui.unit.dp
 

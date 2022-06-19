@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.kevin.rhodesislandassist.models.GameItem
-import com.kevin.rhodesislandassist.models.GameStage
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.RhodesIslandAssistTheme
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.component.ItemDetail
 import com.kevin.rhodesislandassist.ui.component.StageDetail
 import com.kevin.rhodesislandassist.ui.viewmodel.DetailViewModel

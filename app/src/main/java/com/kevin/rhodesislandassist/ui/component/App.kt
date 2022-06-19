@@ -3,6 +3,7 @@ package com.kevin.rhodesislandassist.ui.component
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -10,11 +11,8 @@ import androidx.compose.material.icons.filled.More
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,7 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.kevin.rhodesislandassist.R
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.autoColorScheme
+import com.kevin.rhodesislandassist.ui.theme.getColorScheme
 import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 
 sealed class Page(val route: String, @StringRes val pageName: Int, val icon: ImageVector) {
@@ -67,7 +65,7 @@ fun App(viewModel: DataViewModel) {
                 )
             },
             bottomBar = {
-                NavigationBar(containerColor = autoColorScheme(LocalContext.current).primaryContainer) {
+                NavigationBar(containerColor = getColorScheme(isSystemInDarkTheme()).primaryContainer) {
                     navItems.forEach { item ->
                         NavigationBarItem(
                             icon = {
@@ -88,8 +86,8 @@ fun App(viewModel: DataViewModel) {
                                 }
                             },
                         colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = autoColorScheme(context).primary,
-                            selectedIconColor = autoColorScheme(context).background
+                            indicatorColor = getColorScheme(isSystemInDarkTheme()).primary,
+                            selectedIconColor = getColorScheme(isSystemInDarkTheme()).background
                         ))
                     }
                 }
@@ -100,7 +98,7 @@ fun App(viewModel: DataViewModel) {
                 startDestination = navItems[0].route,
                 modifier = Modifier
                     .padding(it)
-                    .background(color = autoColorScheme(LocalContext.current).background)
+                    .background(color = getColorScheme(isSystemInDarkTheme()).background)
             ) {
                 composable(Page.WelcomePage.route) { Welcome() }
                 composable(Page.SearchPage.route) { Search(viewModel) }

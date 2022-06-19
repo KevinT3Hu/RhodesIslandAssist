@@ -1,7 +1,6 @@
 package com.kevin.rhodesislandassist.ui.viewmodel
 
-import  androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.kevin.rhodesislandassist.DataSetRepository
 import com.kevin.rhodesislandassist.api.models.StageDrop

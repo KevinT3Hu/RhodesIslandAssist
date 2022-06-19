@@ -12,8 +12,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Timeline
@@ -27,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.Dimension
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.RhodesIslandAssistTheme
+import com.kevin.rhodesislandassist.ui.theme.Dimension
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.component.widget.ExpandableCard
 import com.kevin.rhodesislandassist.ui.component.widget.NumberSelector
 import com.kevin.rhodesislandassist.ui.component.widget.SearchDialog
@@ -36,8 +34,7 @@ import com.kevin.rhodesislandassist.ui.viewmodel.PlannerViewModel
 
 class PlannerActivity : ComponentActivity() {
     @OptIn(
-        ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class,
-        ExperimentalUnitApi::class
+        ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

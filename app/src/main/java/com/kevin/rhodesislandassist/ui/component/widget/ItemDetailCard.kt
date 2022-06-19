@@ -21,7 +21,7 @@ import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.api.models.Matrix
 import com.kevin.rhodesislandassist.models.GameStage
 import com.kevin.rhodesislandassist.ui.activity.DetailActivity
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.Dimension
+import com.kevin.rhodesislandassist.ui.theme.Dimension
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
