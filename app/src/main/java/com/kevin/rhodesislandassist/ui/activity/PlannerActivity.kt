@@ -221,7 +221,7 @@ class PlannerActivity : ComponentActivity() {
                             }
                             AnimatedContent(targetState = viewModel.planStatus) { status ->
                                 if (status.value) {
-                                    Column(modifier = Modifier.verticalScroll(rememberScrollState()).weight(1f,false)) {
+                                    Column {
                                         Card(
                                             modifier = Modifier
                                                 .fillMaxWidth()
