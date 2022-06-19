@@ -5,6 +5,11 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\kevin\\.android\\debug.keystore')
+        }
+    }
     compileSdk 32
 
     defaultConfig {
