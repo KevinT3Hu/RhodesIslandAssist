@@ -6,9 +6,9 @@ An app helping users get easy access to ArkNights game data and planner.
 
 ## Release
 
-Lastest version: 0.1.0-alpha.1
+Latest version: 0.1.1-alpha.2
 
-Lastest stable version: none
+Latest stable version: none
 
 Download: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/releases)
 
