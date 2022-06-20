@@ -20,15 +20,19 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NumberSelector(
-    modifier: Modifier=Modifier,
-    numberRange:IntRange=0..Int.MAX_VALUE,
-    initialValue:Int=0,
-    value:MutableState<Int>,
-    onNumberChange:(Int)->Unit={ _: Int -> }
-){
-    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+    modifier: Modifier = Modifier,
+    numberRange: IntRange = 0..Int.MAX_VALUE,
+    initialValue: Int = 0,
+    value: MutableState<Int>,
+    onNumberChange: (Int) -> Unit = { _: Int -> }
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         IconButton(onClick = {
-            if (value.value-1 in numberRange){
+            if (value.value - 1 in numberRange) {
                 value.value--
                 onNumberChange(value.value)
             }
@@ -38,17 +42,17 @@ fun NumberSelector(
         AnimatedContent(
             targetState = value,
             transitionSpec = {
-                if (targetState.value>initialState.value){
+                if (targetState.value > initialState.value) {
                     slideInVertically { fullHeight -> fullHeight } + fadeIn() with
                             slideOutVertically { fullHeight -> -fullHeight } + fadeOut()
-                }else{
+                } else {
                     slideInVertically { fullHeight -> -fullHeight } + fadeIn() with
                             slideOutVertically { fullHeight -> fullHeight } + fadeOut()
                 }.using(
                     SizeTransform(clip = true)
                 )
             }
-        ) {newState->
+        ) { newState ->
             Text(
                 text = newState.value.toString(),
                 modifier = Modifier.width(30.dp),
@@ -56,7 +60,7 @@ fun NumberSelector(
             )
         }
         IconButton(onClick = {
-            if (value.value+1 in numberRange){
+            if (value.value + 1 in numberRange) {
                 value.value++
                 onNumberChange(value.value)
             }

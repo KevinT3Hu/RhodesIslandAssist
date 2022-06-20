@@ -25,8 +25,8 @@ import com.kevin.rhodesislandassist.ui.theme.Dimension
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-fun ItemDetailCard(stage:GameStage,matrix: Matrix,modifier: Modifier=Modifier){
-    val context= LocalContext.current
+fun ItemDetailCard(stage: GameStage, matrix: Matrix, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
     ExpandableCard(
         cardContent = {
             Row(
@@ -35,7 +35,10 @@ fun ItemDetailCard(stage:GameStage,matrix: Matrix,modifier: Modifier=Modifier){
                     .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = "${stage.code}-${stage.name}", fontSize = TextUnit(20f, TextUnitType.Sp))
+                Text(
+                    text = "${stage.code}-${stage.name}",
+                    fontSize = TextUnit(20f, TextUnitType.Sp)
+                )
             }
         },
         cardExpandedContent = {
@@ -43,10 +46,12 @@ fun ItemDetailCard(stage:GameStage,matrix: Matrix,modifier: Modifier=Modifier){
 
             }
             DetailContent(matrix = matrix, stage = stage)
-            Divider(modifier = Modifier
-                .padding(horizontal = 3.dp)
-                .padding(top = 5.dp)
-                .fillMaxWidth(),color= Color.Gray)
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 3.dp)
+                    .padding(top = 5.dp)
+                    .fillMaxWidth(), color = Color.Gray
+            )
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -64,8 +69,15 @@ fun ItemDetailCard(stage:GameStage,matrix: Matrix,modifier: Modifier=Modifier){
                             .makeSceneTransitionAnimation(context as DetailActivity)
                             .toBundle()
                     )
-                }, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = stringResource(id = R.string.hint_stage_detail), color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 12.dp))
+                },
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.hint_stage_detail),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
             }
         },
         modifier = modifier

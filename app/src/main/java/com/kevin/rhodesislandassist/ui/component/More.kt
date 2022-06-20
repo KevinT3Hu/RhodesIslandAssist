@@ -24,70 +24,86 @@ import com.kevin.rhodesislandassist.ui.activity.PlannerActivity
 import com.kevin.rhodesislandassist.ui.component.widget.ListGroup
 
 @Composable
-fun More(){
-    val context= LocalContext.current
-    val tools= mutableListOf(
+fun More() {
+    val context = LocalContext.current
+    val tools = mutableListOf(
         Action(
             title = R.string.title_planner,
             icon = Icons.Filled.Timeline,
             action = {
                 context.startActivity(
-                    Intent(context,PlannerActivity::class.java),
+                    Intent(context, PlannerActivity::class.java),
                     ActivityOptions.makeSceneTransitionAnimation(context as MainActivity).toBundle()
                 )
             }
         )
     )
-    val about= mutableListOf(
+    val about = mutableListOf(
         Action(
-          title = R.string.title_about,
-          action = {
-              context.startActivity(
-                  Intent(
-                      context,AboutActivity::class.java
-                  )
-              )
-          }
+            title = R.string.title_about,
+            action = {
+                context.startActivity(
+                    Intent(
+                        context, AboutActivity::class.java
+                    )
+                )
+            }
         ),
         Action(
             title = R.string.title_license,
             action = {
                 context.startActivity(
                     Intent(
-                        context,OpenSourceNoticesActivity::class.java
+                        context, OpenSourceNoticesActivity::class.java
                     )
                 )
             }
         )
     )
     Column {
-        ListGroup(data = tools, label = stringResource(id = R.string.title_toolbox), modifier = Modifier.padding(vertical = 5.dp)){ tool->
+        ListGroup(
+            data = tools,
+            label = stringResource(id = R.string.title_toolbox),
+            modifier = Modifier.padding(vertical = 5.dp)
+        ) { tool ->
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp)
-                .clickable { tool.action() }){
-                Box(modifier = Modifier
-                    .padding(start = 20.dp, end = 15.dp)
-                    .padding(vertical = 10.dp)){
+                .clickable { tool.action() }) {
+                Box(
+                    modifier = Modifier
+                        .padding(start = 20.dp, end = 15.dp)
+                        .padding(vertical = 10.dp)
+                ) {
                     Icon(imageVector = tool.icon!!, contentDescription = null)
                 }
-                Text(text = stringResource(id = tool.title), modifier = Modifier.padding(start = 10.dp))
+                Text(
+                    text = stringResource(id = tool.title),
+                    modifier = Modifier.padding(start = 10.dp)
+                )
             }
         }
-        ListGroup(data = about, label = stringResource(id = R.string.title_others), modifier = Modifier.padding(vertical = 5.dp)) {aboutItem->
+        ListGroup(
+            data = about,
+            label = stringResource(id = R.string.title_others),
+            modifier = Modifier.padding(vertical = 5.dp)
+        ) { aboutItem ->
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp)
                 .clickable { aboutItem.action() }
             ) {
-                Text(text = stringResource(id = aboutItem.title), modifier = Modifier.padding(start = 30.dp))
+                Text(
+                    text = stringResource(id = aboutItem.title),
+                    modifier = Modifier.padding(start = 30.dp)
+                )
             }
         }
     }
 }
 
 private data class Action(
-    @StringRes val title:Int,
-    val icon:ImageVector?=null,
-    val action:()->Unit
+    @StringRes val title: Int,
+    val icon: ImageVector? = null,
+    val action: () -> Unit
 )

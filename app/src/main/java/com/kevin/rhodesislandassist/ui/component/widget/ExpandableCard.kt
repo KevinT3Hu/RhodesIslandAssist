@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 fun ExpandableCard(
     cardContent: @Composable ColumnScope.() -> Unit,
     cardExpandedContent: @Composable ColumnScope.() -> Unit,
-    modifier: Modifier=Modifier,
-    animationDurationMillis: Int=300,
-    dividerColor:Color=Color.Gray
+    modifier: Modifier = Modifier,
+    animationDurationMillis: Int = 300,
+    dividerColor: Color = Color.Gray
 ) {
     var expanded by remember { mutableStateOf(false) }
     Card(
@@ -40,12 +40,14 @@ fun ExpandableCard(
             .clickable { expanded = !expanded }
     ) {
         cardContent()
-        AnimatedContent(targetState = expanded) {targetState ->
-            if (targetState){
-                Column(modifier=Modifier.fillMaxWidth()) {
-                    Divider(modifier= Modifier
-                        .padding(3.dp)
-                        .fillMaxWidth(), color = dividerColor)
+        AnimatedContent(targetState = expanded) { targetState ->
+            if (targetState) {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Divider(
+                        modifier = Modifier
+                            .padding(3.dp)
+                            .fillMaxWidth(), color = dividerColor
+                    )
                     cardExpandedContent()
                 }
             }

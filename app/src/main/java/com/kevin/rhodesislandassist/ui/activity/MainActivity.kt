@@ -14,15 +14,15 @@ import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(window){
+        with(window) {
             requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
 
-            exitTransition=Slide(Gravity.START)
-            allowEnterTransitionOverlap=true
+            exitTransition = Slide(Gravity.START)
+            allowEnterTransitionOverlap = true
         }
         setContent {
             RhodesIslandAssistTheme {
-                val viewModel:DataViewModel by viewModels()
+                val viewModel: DataViewModel by viewModels()
                 App(viewModel)
             }
         }

@@ -1,6 +1,7 @@
 package com.kevin.rhodesislandassist.ui.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PlannerViewModel:ViewModel() {
+class PlannerViewModel : ViewModel() {
 
     private val api = Retrofit.Builder()
         .baseUrl(ArkPlannerApi.BaseUrl)
@@ -22,74 +23,96 @@ class PlannerViewModel:ViewModel() {
         .build()
         .create(ArkPlannerApi::class.java)
 
-    val planStatus= mutableStateOf(false)
-    val plan= mutableStateOf<Plan?>(null)
+    val planStatus = mutableStateOf(false)
+    val plan = mutableStateOf<Plan?>(null)
 
-    val selectedRequiredMaterials = mutableStateMapOf<String,Int>()
-    val selectedOwnedMaterials = mutableStateMapOf<String,Int>()
 
-    fun addRequiredItem(itemName:String,count:Int=1){
-        selectedRequiredMaterials[itemName]=count
+    val selectedRequiredMaterials = mutableStateMapOf<String, Int>()
+    val selectedOwnedMaterials = mutableStateMapOf<String, Int>()
+
+    val considerExtra = mutableStateOf(false)
+    val considerStore = mutableStateOf(false)
+    val excludedStages = mutableStateListOf<String>()
+
+    fun addRequiredItem(itemName: String, count: Int = 1) {
+        selectedRequiredMaterials[itemName] = count
     }
 
-    fun addOwnedItem(itemName:String,count: Int=1){
-        selectedOwnedMaterials[itemName]=count
+    fun addOwnedItem(itemName: String, count: Int = 1) {
+        selectedOwnedMaterials[itemName] = count
     }
 
-    fun getShowUnselectedRequiredMaterials():List<String>{
-        val items= mutableListOf<String>()
+    fun getShowUnselectedRequiredMaterials(): List<String> {
+        val items = mutableListOf<String>()
         DataSetRepository.gameItemDataSet?.forEach {
-            if (!selectedRequiredMaterials.containsKey(it.value.name)){
+            if (!selectedRequiredMaterials.containsKey(it.value.name)) {
                 items.add(it.value.name!!)
             }
         }
         return items
     }
 
-    fun getShowUnselectedOwnedMaterials():List<String>{
-        val items= mutableListOf<String>()
-        DataSetRepository.gameItemDataSet?.forEach{
-            if (!selectedOwnedMaterials.containsKey(it.value.name)){
+    fun getShowUnselectedOwnedMaterials(): List<String> {
+        val items = mutableListOf<String>()
+        DataSetRepository.gameItemDataSet?.forEach {
+            if (!selectedOwnedMaterials.containsKey(it.value.name)) {
                 items.add(it.value.name!!)
             }
         }
         return items
     }
 
-    fun changeRequiredMaterialCount(item:String,newCount:Int){
-        if (selectedRequiredMaterials.containsKey(item)){
-            if (newCount==0){
+    fun changeRequiredMaterialCount(item: String, newCount: Int) {
+        if (selectedRequiredMaterials.containsKey(item)) {
+            if (newCount == 0) {
                 selectedRequiredMaterials.remove(item)
-            } else selectedRequiredMaterials[item]=newCount
+            } else selectedRequiredMaterials[item] = newCount
         }
     }
 
-    fun changeOwnedMaterialCount(item:String,newCount:Int){
-        if (selectedOwnedMaterials.containsKey(item)){
-            if (newCount==0){
+    fun changeOwnedMaterialCount(item: String, newCount: Int) {
+        if (selectedOwnedMaterials.containsKey(item)) {
+            if (newCount == 0) {
                 selectedOwnedMaterials.remove(item)
-            } else selectedOwnedMaterials[item]=newCount
+            } else selectedOwnedMaterials[item] = newCount
         }
     }
 
-    fun getPlan(){
-        planStatus.value=false
-        val submission=PlannerSubmission(
+    fun getAllStages(): List<String> {
+        val stages = mutableListOf<String>()
+        DataSetRepository.gameStageDataSet!!.values.forEach {
+            if (it.name != null && it.code != null) {
+                stages.add("${it.code}:${it.name}")
+            }
+        }
+        return stages
+    }
+
+    fun getPlan() {
+        planStatus.value = false
+        val excludedStagesCode = mutableListOf<String>()
+        excludedStages.forEach {
+            excludedStagesCode.add(it.substringBefore(":"))
+        }
+        val submission = PlannerSubmission(
             owned = selectedOwnedMaterials,
             required = selectedRequiredMaterials,
+            store = considerStore.value,
+            extra_outc = considerExtra.value,
+            exclude = excludedStagesCode
         )
-        api.getPlan(submission).enqueue(object :Callback<Plan>{
-            override fun onResponse(call: Call<Plan>, response: Response<Plan>){
-                if (response.isSuccessful){
-                    planStatus.value=true
-                    plan.value=response.body()
+        api.getPlan(submission).enqueue(object : Callback<Plan> {
+            override fun onResponse(call: Call<Plan>, response: Response<Plan>) {
+                if (response.isSuccessful) {
+                    planStatus.value = true
+                    plan.value = response.body()
                 }
             }
 
             override fun onFailure(call: Call<Plan>, t: Throwable) {
                 t.printStackTrace()
                 call.request().url().pathSegments().forEach {
-                    Log.e("NETWORK",it)
+                    Log.e("NETWORK", it)
                 }
             }
         })

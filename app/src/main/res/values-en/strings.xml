@@ -48,4 +48,8 @@
     <string name="text_github_link">The project is hosted on GitHub</string>
     <string name="hint_ps">Penguin Stats</string>
     <string name="hint_arkplanner">ArkPlanner</string>
+    <string name="hint_consider_extra">Consider extra output</string>
+    <string name="hint_consider_store">Consider store tickets</string>
+    <string name="hint_exclude_stages">Exclude stages</string>
+    <string name="hint_clear">Clear selections</string>
 </resources>

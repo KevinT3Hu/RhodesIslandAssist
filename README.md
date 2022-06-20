@@ -6,7 +6,7 @@ An app helping users get easy access to ArkNights game data and planner.
 
 ## Release
 
-Latest version: 0.1.2-alpha.3
+Latest version: 0.2.0-alpha.4
 
 Latest stable version: none
 
@@ -30,7 +30,7 @@ Do note that the app is developed with [Jetpack Compose](https://developer.andro
 - [ ] Adjust the user interface so it looks nicer
 - [ ] Redraw the app icon
 - [x] Add international support
-- [ ] Implment report feature
+- [ ] Implement report feature
 
 ## Acknowledgment
 

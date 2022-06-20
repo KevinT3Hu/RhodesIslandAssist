@@ -32,7 +32,7 @@ import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 @Composable
 fun Search(viewModel: DataViewModel) {
     viewModel.fetchDataFromSearchText()
-    val context= LocalContext.current
+    val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -64,8 +64,8 @@ fun Search(viewModel: DataViewModel) {
                 selected = viewModel.itemChipSelected,
                 onClick = {
                     viewModel.itemChipSelected = !viewModel.itemChipSelected
-                          viewModel.fetchDataFromSearchText()
-                          },
+                    viewModel.fetchDataFromSearchText()
+                },
                 label = {
                     Text(text = stringResource(id = R.string.chip_item))
                 },
@@ -78,8 +78,8 @@ fun Search(viewModel: DataViewModel) {
                 selected = viewModel.stageChipSelected,
                 onClick = {
                     viewModel.stageChipSelected = !viewModel.stageChipSelected
-                          viewModel.fetchDataFromSearchText()
-                          },
+                    viewModel.fetchDataFromSearchText()
+                },
                 label = {
                     Text(text = stringResource(id = R.string.chip_stage))
                 },
@@ -95,12 +95,13 @@ fun Search(viewModel: DataViewModel) {
                         .padding(horizontal = 10.dp, vertical = 5.dp)
                         .fillMaxWidth(),
                     onClick = {
-                              context.startActivity(
-                                  Intent(context,DetailActivity::class.java)
-                                      .putExtra(DetailActivity.ExtraTagType,DetailActivity.TypeItem)
-                                      .putExtra(DetailActivity.ExtraDataItemOrStage,item),
-                                  ActivityOptions.makeSceneTransitionAnimation(context as MainActivity).toBundle()
-                              )
+                        context.startActivity(
+                            Intent(context, DetailActivity::class.java)
+                                .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeItem)
+                                .putExtra(DetailActivity.ExtraDataItemOrStage, item),
+                            ActivityOptions.makeSceneTransitionAnimation(context as MainActivity)
+                                .toBundle()
+                        )
                     },
                 ) {
                     Row(
@@ -124,11 +125,14 @@ fun Search(viewModel: DataViewModel) {
                             modifier = Modifier.fillMaxWidth(0.6f)
                         ) {
                             Text(
-                                text = item.name?:"",
+                                text = item.name ?: "",
                                 fontSize = TextUnit(20f, TextUnitType.Sp),
                                 modifier = Modifier.padding(vertical = 7.dp)
                             )
-                            Text(text = item.description?:"", fontSize = TextUnit(12f, TextUnitType.Sp))
+                            Text(
+                                text = item.description ?: "",
+                                fontSize = TextUnit(12f, TextUnitType.Sp)
+                            )
                         }
                     }
                 }
@@ -140,9 +144,9 @@ fun Search(viewModel: DataViewModel) {
                         .fillMaxWidth(),
                     onClick = {
                         context.startActivity(
-                            Intent(context,DetailActivity::class.java)
-                                .putExtra(DetailActivity.ExtraTagType,DetailActivity.TypeStage)
-                                .putExtra(DetailActivity.ExtraDataItemOrStage,stage)
+                            Intent(context, DetailActivity::class.java)
+                                .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeStage)
+                                .putExtra(DetailActivity.ExtraDataItemOrStage, stage)
                         )
                     }) {
                     Row(

@@ -25,8 +25,13 @@ import com.kevin.rhodesislandassist.ui.activity.DetailActivity
 
 @OptIn(ExperimentalUnitApi::class)
 @Composable
-fun StageDetailCard(item: GameItem,stage: GameStage,matrix:Matrix,modifier: Modifier=Modifier){
-    val context= LocalContext.current
+fun StageDetailCard(
+    item: GameItem,
+    stage: GameStage,
+    matrix: Matrix,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
     ExpandableCard(
         cardContent = {
             Row(
@@ -35,15 +40,17 @@ fun StageDetailCard(item: GameItem,stage: GameStage,matrix:Matrix,modifier: Modi
                     .padding(vertical = 10.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = item.name?:"", fontSize = TextUnit(20f, TextUnitType.Sp))
+                Text(text = item.name ?: "", fontSize = TextUnit(20f, TextUnitType.Sp))
             }
         },
         cardExpandedContent = {
             DetailContent(matrix = matrix, stage = stage)
-            Divider(modifier = Modifier
-                .padding(horizontal = 3.dp)
-                .padding(top = 5.dp)
-                .fillMaxWidth(),color= Color.Gray)
+            Divider(
+                modifier = Modifier
+                    .padding(horizontal = 3.dp)
+                    .padding(top = 5.dp)
+                    .fillMaxWidth(), color = Color.Gray
+            )
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -61,10 +68,17 @@ fun StageDetailCard(item: GameItem,stage: GameStage,matrix:Matrix,modifier: Modi
                             .makeSceneTransitionAnimation(context as DetailActivity)
                             .toBundle()
                     )
-                }, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = stringResource(id = R.string.hint_item_detail), color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(vertical = 12.dp))
+                },
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.hint_item_detail),
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(vertical = 12.dp)
+                )
             }
         },
-        modifier= modifier.padding(5.dp)
+        modifier = modifier.padding(5.dp)
     )
 }

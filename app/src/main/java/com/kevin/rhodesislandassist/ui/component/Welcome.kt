@@ -35,7 +35,7 @@ fun Welcome() {
         Text(
             text = stringResource(id = R.string.word_welcome),
             style = TextStyle(fontSize = TextUnit(30f, TextUnitType.Sp)),
-            modifier = Modifier.padding(10.dp,100.dp,10.dp,0.dp)
+            modifier = Modifier.padding(10.dp, 100.dp, 10.dp, 0.dp)
         )
     }
 }

@@ -10,8 +10,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.R
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 
 class OpenSourceNoticesActivity : ComponentActivity() {
@@ -28,16 +28,20 @@ class OpenSourceNoticesActivity : ComponentActivity() {
                     Scaffold(
                         topBar = {
                             SmallTopAppBar(
-                                navigationIcon = { IconButton(onClick = { finish() }) {
-                                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
-                                } },
+                                navigationIcon = {
+                                    IconButton(onClick = { finish() }) {
+                                        Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                                    }
+                                },
                                 title = { Text(text = stringResource(id = R.string.title_activity_open_source_notices)) }
                             )
                         }
                     ) {
-                        LibrariesContainer(modifier = Modifier
-                            .padding(it)
-                            .fillMaxSize())
+                        LibrariesContainer(
+                            modifier = Modifier
+                                .padding(it)
+                                .fillMaxSize()
+                        )
                     }
                 }
             }

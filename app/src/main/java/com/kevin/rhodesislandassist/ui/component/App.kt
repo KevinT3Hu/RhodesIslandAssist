@@ -28,14 +28,14 @@ import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 sealed class Page(val route: String, @StringRes val pageName: Int, val icon: ImageVector) {
     object WelcomePage : Page("welcome", R.string.page_welcome, Icons.Filled.Home)
     object SearchPage : Page("search", R.string.page_search, Icons.Filled.Search)
-    object MorePage:Page("more",R.string.page_more,Icons.Filled.More)
+    object MorePage : Page("more", R.string.page_more, Icons.Filled.More)
 }
 
 private fun getSelectedItem(route: String?): Page {
     return when (route) {
         Page.WelcomePage.route -> Page.WelcomePage
         Page.SearchPage.route -> Page.SearchPage
-        Page.MorePage.route->Page.MorePage
+        Page.MorePage.route -> Page.MorePage
         else -> Page.WelcomePage
     }
 }
@@ -46,10 +46,10 @@ private fun getSelectedItem(route: String?): Page {
 fun App(viewModel: DataViewModel) {
     val navItems = listOf(Page.WelcomePage, Page.SearchPage, Page.MorePage)
     val navController = rememberNavController()
-    val context= LocalContext.current
+    val context = LocalContext.current
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = currentBackStackEntry?.destination?.route
-    Surface{
+    Surface {
         Scaffold(
             topBar = {
                 CenterAlignedTopAppBar(
@@ -75,7 +75,7 @@ fun App(viewModel: DataViewModel) {
                                 )
                             },
                             label = { Text(text = stringResource(id = item.pageName)) },
-                            selected = currentBackStackEntry?.destination?.route ==item.route,
+                            selected = currentBackStackEntry?.destination?.route == item.route,
                             onClick = {
                                 navController.navigate(item.route) {
                                     popUpTo(navController.graph.findStartDestination().id) {
@@ -85,10 +85,11 @@ fun App(viewModel: DataViewModel) {
                                     restoreState = true
                                 }
                             },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = getColorScheme(isSystemInDarkTheme()).primary,
-                            selectedIconColor = getColorScheme(isSystemInDarkTheme()).background
-                        ))
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = getColorScheme(isSystemInDarkTheme()).primary,
+                                selectedIconColor = getColorScheme(isSystemInDarkTheme()).background
+                            )
+                        )
                     }
                 }
             }
@@ -102,7 +103,7 @@ fun App(viewModel: DataViewModel) {
             ) {
                 composable(Page.WelcomePage.route) { Welcome() }
                 composable(Page.SearchPage.route) { Search(viewModel) }
-                composable(Page.MorePage.route){ More()}
+                composable(Page.MorePage.route) { More() }
             }
         }
     }

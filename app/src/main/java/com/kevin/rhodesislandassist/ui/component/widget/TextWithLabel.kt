@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.TextUnitType
 @OptIn(ExperimentalUnitApi::class)
 @Composable
 fun TextWithLabel(
-    modifier: Modifier=Modifier,
-    labelColor:Color=MaterialTheme.colorScheme.onBackground,
-    textColor: Color=MaterialTheme.colorScheme.onBackground,
-    label:String,
-    text:String
-){
+    modifier: Modifier = Modifier,
+    labelColor: Color = MaterialTheme.colorScheme.onBackground,
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
+    label: String,
+    text: String
+) {
     Column(horizontalAlignment = Alignment.Start, modifier = modifier.fillMaxWidth()) {
         Text(text = label, color = labelColor, fontSize = TextUnit(15f, TextUnitType.Sp))
         Text(text = text, color = textColor, fontSize = TextUnit(15f, TextUnitType.Sp))

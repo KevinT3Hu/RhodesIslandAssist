@@ -12,22 +12,30 @@ import com.kevin.rhodesislandassist.api.models.Matrix
 import com.kevin.rhodesislandassist.models.GameStage
 
 @Composable
-fun DetailContent(matrix: Matrix,stage:GameStage){
+fun DetailContent(matrix: Matrix, stage: GameStage) {
     val dataToShow = mapOf(
-        Pair(R.string.label_drop_count,matrix.quantity.toString()),
-        Pair(R.string.label_sample_count,matrix.times.toString()),
-        Pair(R.string.label_drop_rate,matrix.dropDate().toString()),
-        Pair(R.string.label_single_expected_ap_cost,matrix.expectedApCostPerItem(stage.apCost).toString()),
+        Pair(R.string.label_drop_count, matrix.quantity.toString()),
+        Pair(R.string.label_sample_count, matrix.times.toString()),
+        Pair(R.string.label_drop_rate, matrix.dropDate().toString()),
         Pair(
-            R.string.label_data_time_range,"${
-            DateFormat.getDateInstance(
-                DateFormat.MEDIUM
-            ).format(matrix.getStartDate())
-        }-${DateFormat.getDateInstance(DateFormat.MEDIUM).format(matrix.getEndDate())}")
+            R.string.label_single_expected_ap_cost,
+            matrix.expectedApCostPerItem(stage.apCost).toString()
+        ),
+        Pair(
+            R.string.label_data_time_range, "${
+                DateFormat.getDateInstance(
+                    DateFormat.MEDIUM
+                ).format(matrix.getStartDate())
+            }-${DateFormat.getDateInstance(DateFormat.MEDIUM).format(matrix.getEndDate())}"
+        )
     )
     Column {
-        dataToShow.forEach {data->
-            TextWithLabel(label = stringResource(id = data.key), text = data.value, modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp))
+        dataToShow.forEach { data ->
+            TextWithLabel(
+                label = stringResource(id = data.key),
+                text = data.value,
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)
+            )
         }
     }
 }

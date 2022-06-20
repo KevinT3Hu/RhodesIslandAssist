@@ -14,22 +14,26 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.material3.*
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
-import com.kevin.rhodesislandassist.ui.theme.Dimension
-import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
+import com.kevin.rhodesislandassist.ui.component.widget.DropDownMenuItemWithTail
 import com.kevin.rhodesislandassist.ui.component.widget.ExpandableCard
 import com.kevin.rhodesislandassist.ui.component.widget.NumberSelector
 import com.kevin.rhodesislandassist.ui.component.widget.SearchDialog
+import com.kevin.rhodesislandassist.ui.theme.Dimension
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.viewmodel.PlannerViewModel
 
 class PlannerActivity : ComponentActivity() {
@@ -51,12 +55,82 @@ class PlannerActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val viewModel: PlannerViewModel by viewModels()
                     Scaffold(
                         topBar = {
-                            CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.title_planner)) })
+                            CenterAlignedTopAppBar(
+                                title = { Text(text = stringResource(id = R.string.title_planner)) },
+                                actions = {
+                                    var settingsMenuExpanded by remember { mutableStateOf(false) }
+                                    val excludeDialogShow = remember { mutableStateOf(false) }
+                                    IconButton(onClick = {
+                                        settingsMenuExpanded = !settingsMenuExpanded
+                                    }) {
+                                        Icon(Icons.Filled.Settings, contentDescription = null)
+                                    }
+                                    DropdownMenu(
+                                        expanded = settingsMenuExpanded,
+                                        onDismissRequest = { settingsMenuExpanded = false }) {
+                                        DropDownMenuItemWithTail(
+                                            text = stringResource(id = R.string.hint_consider_extra),
+                                            tail = {
+                                                Checkbox(
+                                                    checked = viewModel.considerExtra.value,
+                                                    onCheckedChange = {
+                                                        viewModel.considerExtra.value =
+                                                            !viewModel.considerExtra.value
+                                                    }
+                                                )
+                                            },
+                                            onClick = {
+                                                viewModel.considerExtra.value =
+                                                    !viewModel.considerExtra.value
+                                            })
+                                        Divider(color = Color.Gray)
+                                        DropDownMenuItemWithTail(
+                                            text = stringResource(id = R.string.hint_consider_store),
+                                            tail = {
+                                                Checkbox(
+                                                    checked = viewModel.considerStore.value,
+                                                    onCheckedChange = {
+                                                        viewModel.considerStore.value =
+                                                            !viewModel.considerStore.value
+                                                    })
+                                            },
+                                            onClick = {
+                                                viewModel.considerStore.value =
+                                                    !viewModel.considerStore.value
+                                            })
+                                        Divider(color = Color.Gray)
+                                        DropDownMenuItemWithTail(
+                                            text = stringResource(id = R.string.hint_exclude_stages),
+                                            tail = {
+                                                Icon(
+                                                    Icons.Filled.ArrowRight,
+                                                    contentDescription = null
+                                                )
+                                            },
+                                            onClick = {
+                                                excludeDialogShow.value = true
+                                                settingsMenuExpanded = !settingsMenuExpanded
+                                            }
+                                        )
+                                    }
+                                    SearchDialog(
+                                        show = excludeDialogShow,
+                                        searchSource = viewModel.getAllStages(),
+                                        showDataInitial = true,
+                                        selected = viewModel.excludedStages,
+                                        dismissButtonTxt = R.string.hint_clear,
+                                        onDismiss = {
+                                            viewModel.excludedStages.clear()
+                                            excludeDialogShow.value = !excludeDialogShow.value
+                                        }
+                                    )
+                                }
+                            )
                         }
                     ) {
-                        val viewModel: PlannerViewModel by viewModels()
                         Column(
                             modifier = Modifier.padding(it),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -238,9 +312,11 @@ class PlannerActivity : ComponentActivity() {
                                                 text = "${stringResource(id = R.string.hint_expected_gcost)}:${plan.gcost}",
                                                 modifier = Modifier.padding(5.dp)
                                             )
-                                            Divider(color = Color.Gray,modifier = Modifier
-                                                .padding(5.dp)
-                                                .fillMaxWidth())
+                                            Divider(
+                                                color = Color.Gray, modifier = Modifier
+                                                    .padding(5.dp)
+                                                    .fillMaxWidth()
+                                            )
                                             LazyColumn(modifier = Modifier.padding(horizontal = 5.dp)) {
                                                 items(plan.stages) { stage ->
                                                     ExpandableCard(
@@ -288,15 +364,23 @@ class PlannerActivity : ComponentActivity() {
                                                     vertical = Dimension.ListItemPadding
                                                 )
                                         ) {
-                                            Text(text = stringResource(id = R.string.hint_synthesis_target), modifier = Modifier
-                                                .padding(5.dp)
-                                                .padding(top = 5.dp))
-                                            Divider(color = Color.Gray, modifier = Modifier
-                                                .padding(5.dp)
-                                                .fillMaxWidth())
+                                            Text(
+                                                text = stringResource(id = R.string.hint_synthesis_target),
+                                                modifier = Modifier
+                                                    .padding(5.dp)
+                                                    .padding(top = 5.dp)
+                                            )
+                                            Divider(
+                                                color = Color.Gray, modifier = Modifier
+                                                    .padding(5.dp)
+                                                    .fillMaxWidth()
+                                            )
                                             LazyColumn(modifier = Modifier.padding(5.dp)) {
                                                 items(viewModel.plan.value!!.syntheses) { synthesis ->
-                                                    Text(text = synthesis.target, modifier = Modifier.padding(5.dp))
+                                                    Text(
+                                                        text = synthesis.target,
+                                                        modifier = Modifier.padding(5.dp)
+                                                    )
                                                 }
                                             }
                                         }

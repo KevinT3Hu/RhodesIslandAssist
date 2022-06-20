@@ -47,4 +47,8 @@
     <string name="text_github_link">本项目源码托管于GitHub</string>
     <string name="hint_ps">企鹅物流</string>
     <string name="hint_arkplanner">ArkPlanner</string>
+    <string name="hint_consider_extra">计算副产物</string>
+    <string name="hint_consider_store">计算凭证收益</string>
+    <string name="hint_exclude_stages">排除关卡</string>
+    <string name="hint_clear">清空选择</string>
 </resources>

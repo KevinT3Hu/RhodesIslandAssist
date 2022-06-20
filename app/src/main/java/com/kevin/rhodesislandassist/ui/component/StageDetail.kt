@@ -24,47 +24,59 @@ import com.kevin.rhodesislandassist.ui.viewmodel.DetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StageDetail(stage: GameStage?,viewModel:DetailViewModel){
-    if (stage==null) return
+fun StageDetail(stage: GameStage?, viewModel: DetailViewModel) {
+    if (stage == null) return
     //stage nonnull
-    val context= LocalContext.current
-    val refreshState= rememberSwipeRefreshState(isRefreshing = true)
-    viewModel.getStageMatrix(stage.stageId?:"",context,refreshState)
+    val context = LocalContext.current
+    val refreshState = rememberSwipeRefreshState(isRefreshing = true)
+    viewModel.getStageMatrix(stage.stageId ?: "", context, refreshState)
     Scaffold(
         topBar = {
             SmallTopAppBar(
-                navigationIcon = { IconButton(onClick = { (context as DetailActivity).onBackPressed() }) {
-                    Icon(Icons.Filled.NavigateBefore, contentDescription = null)
-                } },
+                navigationIcon = {
+                    IconButton(onClick = { (context as DetailActivity).onBackPressed() }) {
+                        Icon(Icons.Filled.NavigateBefore, contentDescription = null)
+                    }
+                },
                 title = { Text(text = "${stage.code}-${stage.name}") },
                 actions = {
                     //action for uploading drops
                     IconButton(onClick = {
                         /**
                         context.startActivity(
-                            Intent(context,UploadActivity::class.java)
-                                .putExtra(UploadActivity.ExtraStage,stage),
-                            ActivityOptions.makeSceneTransitionAnimation(context as DetailActivity).toBundle()
+                        Intent(context,UploadActivity::class.java)
+                        .putExtra(UploadActivity.ExtraStage,stage),
+                        ActivityOptions.makeSceneTransitionAnimation(context as DetailActivity).toBundle()
                         )*/
-                        Toast.makeText(context,R.string.toast_unimplemented,Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, R.string.toast_unimplemented, Toast.LENGTH_SHORT)
+                            .show()
                     }) {
-                        Icon(Icons.Filled.Upload, contentDescription = stringResource(id = R.string.page_upload))
+                        Icon(
+                            Icons.Filled.Upload,
+                            contentDescription = stringResource(id = R.string.page_upload)
+                        )
                     }
                 }
             )
         }
     ) {
-        ElevatedCard(modifier = Modifier
-            .padding(it)
-            .padding(7.dp)) {
-            Text(text = "${stringResource(id = R.string.hint_ap_cost)}：${stage.apCost}",
+        ElevatedCard(
+            modifier = Modifier
+                .padding(it)
+                .padding(7.dp)
+        ) {
+            Text(
+                text = "${stringResource(id = R.string.hint_ap_cost)}：${stage.apCost}",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 10.dp))
-            SwipeRefresh(state = refreshState, onRefresh = { viewModel.refreshStage(stage.stageId!!,context, refreshState) }) {
-                LazyColumn(modifier = Modifier.padding(top = 5.dp)){
-                    items(viewModel.matrixes){matrix->
-                        val item=viewModel.getItemById(matrix.itemId)
+                    .padding(horizontal = 30.dp, vertical = 10.dp)
+            )
+            SwipeRefresh(
+                state = refreshState,
+                onRefresh = { viewModel.refreshStage(stage.stageId!!, context, refreshState) }) {
+                LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
+                    items(viewModel.matrixes) { matrix ->
+                        val item = viewModel.getItemById(matrix.itemId)
                         if (item != null) {
                             StageDetailCard(item = item, stage = stage, matrix = matrix)
                         }

@@ -63,4 +63,5 @@ fun RhodesIslandAssistTheme(
     )
 }
 
-fun getColorScheme(isInDarkMode:Boolean=false)=if (isInDarkMode) DarkColorScheme else LightColorScheme
+fun getColorScheme(isInDarkMode: Boolean = false) =
+    if (isInDarkMode) DarkColorScheme else LightColorScheme

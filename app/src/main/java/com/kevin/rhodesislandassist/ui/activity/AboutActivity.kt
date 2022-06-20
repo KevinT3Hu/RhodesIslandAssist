@@ -21,9 +21,9 @@ import com.kevin.rhodesislandassist.util.launchUrl
 
 class AboutActivity : ComponentActivity() {
 
-    private val psUrl="https://penguin-stats.cn"
-    private val arkPlannerUrl="https://github.com/penguin-statistics/ArkPlanner"
-    private val projectGitHubUrl="https://github.com/KevinT3Hu/RhodesIslandAssist"
+    private val psUrl = "https://penguin-stats.cn"
+    private val arkPlannerUrl = "https://github.com/penguin-statistics/ArkPlanner"
+    private val projectGitHubUrl = "https://github.com/KevinT3Hu/RhodesIslandAssist"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,34 +34,67 @@ class AboutActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(painter = painterResource(id = R.drawable.ic_logo), contentDescription = null,modifier=Modifier.padding(vertical = 5.dp))
-                        Text(text = "${stringResource(id = R.string.hint_current_version)}:${packageManager.getPackageInfo(packageName,0).versionName}", modifier = Modifier.padding(vertical = 5.dp))
-                        Text(text = stringResource(id = R.string.text_based_on_ps), modifier = Modifier.padding(vertical = 5.dp))
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_logo),
+                            contentDescription = null,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                        Text(
+                            text = "${stringResource(id = R.string.hint_current_version)}:${
+                                packageManager.getPackageInfo(
+                                    packageName,
+                                    0
+                                ).versionName
+                            }", modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.text_based_on_ps),
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
 
                     }
                     Column(modifier = Modifier.paddingFromBaseline(bottom = 45.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier
-                            .padding(horizontal = 50.dp)
-                            .fillMaxWidth()){
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            modifier = Modifier
+                                .padding(horizontal = 50.dp)
+                                .fillMaxWidth()
+                        ) {
                             Text(text = stringResource(id = R.string.text_github_link))
                             Image(
                                 painter = painterResource(id = R.drawable.ic_github_logo),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .clickable {
-                                        launchUrl(this@AboutActivity,projectGitHubUrl)
+                                        launchUrl(this@AboutActivity, projectGitHubUrl)
                                     }
                                     .size(35.dp)
                             )
                         }
-                        Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.padding(horizontal = 50.dp).padding(top = 10.dp).fillMaxWidth()) {
-                            Text(text = stringResource(id = R.string.hint_ps), textDecoration = TextDecoration.Underline, modifier = Modifier.clickable {
-                                launchUrl(this@AboutActivity,psUrl)
-                            })
-                            Text(text = stringResource(id = R.string.hint_arkplanner), textDecoration = TextDecoration.Underline, modifier = Modifier.clickable {
-                                launchUrl(this@AboutActivity,arkPlannerUrl)
-                            })
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            modifier = Modifier
+                                .padding(horizontal = 50.dp)
+                                .padding(top = 10.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.hint_ps),
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.clickable {
+                                    launchUrl(this@AboutActivity, psUrl)
+                                })
+                            Text(
+                                text = stringResource(id = R.string.hint_arkplanner),
+                                textDecoration = TextDecoration.Underline,
+                                modifier = Modifier.clickable {
+                                    launchUrl(this@AboutActivity, arkPlannerUrl)
+                                })
                         }
                     }
                 }
