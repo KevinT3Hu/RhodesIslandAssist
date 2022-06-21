@@ -1,12 +1,15 @@
 package com.kevin.rhodesislandassist.api.models
 
 import androidx.annotation.Keep
+import com.kevin.rhodesislandassist.BuildConfig
 
 @Keep
 data class StageDrop(
-    val stageId:String,
-    val server:String,
-    val drops:MutableList<Drop>
+    var stageId: String,
+    val server: String,
+    val drops: MutableList<Drop>,
+    val version: String = "${BuildConfig.VERSION_CODE}",
+    val source: String = "Android"
 ){
     data class Drop(
         val dropType:String,

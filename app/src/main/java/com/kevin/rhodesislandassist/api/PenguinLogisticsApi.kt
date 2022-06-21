@@ -25,5 +25,5 @@ interface PenguinLogisticsApi {
     fun getStageInfo(@Query("stageFilter")stageId:String):Call<MatrixResponse>
 
     @POST(ReportApiRequestUrl)
-    fun postStageDrop(@Body drop: StageDrop):Call<StageDrop>
+    fun postStageDrop(@Body drop: StageDrop): Call<Any>
 }

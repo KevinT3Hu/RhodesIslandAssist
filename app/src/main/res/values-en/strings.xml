@@ -52,4 +52,6 @@
     <string name="hint_consider_store">Consider store tickets</string>
     <string name="hint_exclude_stages">Exclude stages</string>
     <string name="hint_clear">Clear selections</string>
+    <string name="toast_report_success">Report success</string>
+    <string name="toast_report_fail">Report fail</string>
 </resources>

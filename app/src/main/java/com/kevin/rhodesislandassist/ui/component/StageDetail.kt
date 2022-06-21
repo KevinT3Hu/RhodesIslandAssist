@@ -1,6 +1,7 @@
 package com.kevin.rhodesislandassist.ui.component
 
-import android.widget.Toast
+import android.app.ActivityOptions
+import android.content.Intent
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.models.GameStage
 import com.kevin.rhodesislandassist.ui.activity.DetailActivity
+import com.kevin.rhodesislandassist.ui.activity.UploadActivity
 import com.kevin.rhodesislandassist.ui.component.widget.StageDetailCard
 import com.kevin.rhodesislandassist.ui.viewmodel.DetailViewModel
 
@@ -42,14 +44,14 @@ fun StageDetail(stage: GameStage?, viewModel: DetailViewModel) {
                 actions = {
                     //action for uploading drops
                     IconButton(onClick = {
-                        /**
                         context.startActivity(
-                        Intent(context,UploadActivity::class.java)
-                        .putExtra(UploadActivity.ExtraStage,stage),
-                        ActivityOptions.makeSceneTransitionAnimation(context as DetailActivity).toBundle()
-                        )*/
-                        Toast.makeText(context, R.string.toast_unimplemented, Toast.LENGTH_SHORT)
-                            .show()
+                            Intent(context, UploadActivity::class.java)
+                                .putExtra(UploadActivity.ExtraStage, stage),
+                            ActivityOptions.makeSceneTransitionAnimation(context as DetailActivity)
+                                .toBundle()
+                        )
+                        //Toast.makeText(context, R.string.toast_unimplemented, Toast.LENGTH_SHORT)
+                        //    .show()
                     }) {
                         Icon(
                             Icons.Filled.Upload,

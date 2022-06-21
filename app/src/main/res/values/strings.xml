@@ -51,4 +51,6 @@
     <string name="hint_consider_store">计算凭证收益</string>
     <string name="hint_exclude_stages">排除关卡</string>
     <string name="hint_clear">清空选择</string>
+    <string name="toast_report_success">汇报成功</string>
+    <string name="toast_report_fail">汇报失败</string>
 </resources>

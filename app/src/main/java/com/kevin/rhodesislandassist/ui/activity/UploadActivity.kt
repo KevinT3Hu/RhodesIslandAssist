@@ -7,20 +7,25 @@ import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.models.GameStage
 import com.kevin.rhodesislandassist.ui.component.widget.NumberSelector
+import com.kevin.rhodesislandassist.ui.theme.Dimension
 import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.viewmodel.UploadViewModel
 
@@ -46,15 +51,35 @@ class UploadActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val viewModel: UploadViewModel by viewModels()
                     Scaffold(
                         topBar = {
                             SmallTopAppBar(
+                                navigationIcon = {
+                                    IconButton(onClick = { finish() }) {
+                                        Icon(Icons.Filled.ArrowBack, contentDescription = null)
+                                    }
+                                },
                                 title = { Text(text = "${stringResource(id = R.string.title_activity_upload)}:${stage.code}-${stage.name}") }
                             )
+                        },
+                        floatingActionButton = {
+                            FloatingActionButton(onClick = {
+                                viewModel.report(
+                                    this@UploadActivity,
+                                    stage.stageId!!
+                                )
+                            }) {
+                                Icon(Icons.Filled.Upload, contentDescription = null)
+                            }
                         }
                     ) { padding ->
-                        val viewModel: UploadViewModel by viewModels()
-                        Column(modifier = Modifier.padding(padding)) {
+                        Column(
+                            modifier = Modifier
+                                .padding(padding)
+                                .padding(horizontal = Dimension.HorizontalPadding)
+                                .verticalScroll(rememberScrollState())
+                        ) {
                             var commonDrops = listOf<GameStage.DropInfo>()
                             var extraDrops = listOf<GameStage.DropInfo>()
                             stage.stageDrops!!.partition {
@@ -66,28 +91,25 @@ class UploadActivity : ComponentActivity() {
                                 }.first
                             }
 
-                            Card {
+                            Card(modifier = Modifier.fillMaxWidth()) {
                                 Text(
                                     text = stringResource(id = R.string.hint_common_drop),
                                     modifier = Modifier
                                         .padding(5.dp)
                                         .padding(top = 5.dp)
                                 )
-                                LazyColumn {
-                                    items(commonDrops) { drop ->
-                                        val count = remember { mutableStateOf(0) }
-                                        NumberSelector(
-                                            value = count,
-                                            onNumberChange = { newCount ->
-                                                if (newCount == 0) {
-                                                    viewModel.removeDrop(drop.id!!)
-                                                } else {
-
-                                                }
-                                            }
-                                        )
-                                    }
-                                }
+                                DropColumn(items = commonDrops, viewModel = viewModel)
+                            }
+                            Card(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp)) {
+                                Text(
+                                    text = stringResource(id = R.string.hint_extra_drop),
+                                    modifier = Modifier
+                                        .padding(5.dp)
+                                        .padding(top = 5.dp)
+                                )
+                                DropColumn(items = extraDrops, viewModel = viewModel)
                             }
                         }
                     }
@@ -95,4 +117,40 @@ class UploadActivity : ComponentActivity() {
             }
         }
     }
+}
+
+@Composable
+private fun DropColumn(items: List<GameStage.DropInfo>, viewModel: UploadViewModel) {
+    Column {
+        items.forEach { dropInfo ->
+            val item = viewModel.getItemById(dropInfo.id!!)
+            if (item != null) {
+                val count = remember { mutableStateOf(0) }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable {}) {
+                    Text(text = item.name!!, modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 10.dp))
+                    NumberSelector(value = count, onNumberChange = { newCount ->
+                        if (newCount == 0) {
+                            viewModel.removeDrop(getDropType(dropInfo.dropType), dropInfo.id)
+                        } else {
+                            viewModel.updateDrop(
+                                getDropType(dropInfo.dropType),
+                                dropInfo.id,
+                                newCount
+                            )
+                        }
+                    })
+                }
+            }
+        }
+    }
+}
+
+private fun getDropType(dropType: GameStage.DropType): String {
+    if (dropType == GameStage.DropType.COMMON) return "NORMAL_DROP"
+    if (dropType == GameStage.DropType.SMALL_CHANCE || dropType == GameStage.DropType.MINOR_CHANCE) return "EXTRA_DROP"
+    return ""
 }

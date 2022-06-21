@@ -4,9 +4,11 @@
 
 An app helping users get easy access to ArkNights game data and planner.
 
+Contact me at [My email](mailto:kevint3hu@outlook.com)
+
 ## Release
 
-Latest version: 0.2.1-alpha.5
+Latest version: 0.3.0-alpha.6
 
 Latest stable version: none
 
@@ -16,6 +18,7 @@ Download: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/rele
 
 - Look up game data concerning items and stages.
 - Plan your stages to get certain items the easiest way.
+- Report stage drops.(This feature has not been fully tested yet. If you encounter any problems, please let me know.)
 
 
 ## For Developers
@@ -24,13 +27,16 @@ As this project is still in early development, I'm welcome to all issues and pul
 
 Do note that the app is developed with [Jetpack Compose](https://developer.android.com/jetpack/compose) and [Material 3](https://m3.material.io/), so you will need to have the corresponding version of specific tools. For more details concerning this issue, please refer to the documents of Jetpack Compose and Material 3.
 
+You can contact me at [My email](mailto:kevint3hu@outlook.com)
+
 ## TODO
 
 - [ ] Reformat code style and add annotations to make the code clear
 - [ ] Adjust the user interface so it looks nicer
 - [ ] Redraw the app icon
 - [x] Add international support
-- [ ] Implement report feature(This is expected to be finished just in the next version)
+- [x] Implement report feature
+- [ ] Error handling in report feature
 - [ ] May implement operator info lookup
 
 ## Acknowledgment
