@@ -10,8 +10,8 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowRight
@@ -132,9 +132,12 @@ class PlannerActivity : ComponentActivity() {
                         }
                     ) {
                         Column(
-                            modifier = Modifier.padding(it),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
+                            modifier = Modifier
+                                .padding(it)
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+
+                            ) {
                             Card(modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)) {
                                 val dialogShow = remember { mutableStateOf(false) }
                                 Text(
@@ -143,56 +146,55 @@ class PlannerActivity : ComponentActivity() {
                                         .fillMaxWidth()
                                         .padding(10.dp)
                                 )
-                                LazyColumn(verticalArrangement = Arrangement.spacedBy(Dimension.ListItemPadding)) {
-                                    items(viewModel.selectedRequiredMaterials.keys.toList()) { itemName ->
-                                        val requiredNumber = remember {
-                                            mutableStateOf(viewModel.selectedRequiredMaterials[itemName]!!)
-                                        }
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.SpaceAround,
-                                            modifier = Modifier
-                                                .padding(
-                                                    vertical = Dimension.ListItemPadding,
-                                                    horizontal = 5.dp
-                                                )
-                                                .clickable { }) {
-                                            Row(
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically,
-                                                modifier = Modifier.fillMaxWidth()
-                                            ) {
-                                                Text(text = itemName)
-                                                NumberSelector(
-                                                    value = requiredNumber,
-                                                    onNumberChange = { value ->
-                                                        viewModel.changeRequiredMaterialCount(
-                                                            itemName,
-                                                            value
-                                                        )
-                                                    })
+                                Column {
+                                    viewModel.selectedRequiredMaterials.keys.toList()
+                                        .forEach { itemName ->
+                                            val requiredNumber = remember {
+                                                mutableStateOf(viewModel.selectedRequiredMaterials[itemName]!!)
                                             }
-                                            Divider(
-                                                color = Color.Gray,
-                                                modifier = Modifier.height(0.3.dp)
-                                            )
-                                        }
-                                    }
-                                    item {
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .clickable {
-                                                    dialogShow.value = true
+                                            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                                                verticalArrangement = Arrangement.SpaceAround,
+                                                modifier = Modifier
+                                                    .padding(
+                                                        vertical = Dimension.ListItemPadding,
+                                                        horizontal = 5.dp
+                                                    )
+                                                    .clickable { }) {
+                                                Row(
+                                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    modifier = Modifier.fillMaxWidth()
+                                                ) {
+                                                    Text(text = itemName)
+                                                    NumberSelector(
+                                                        value = requiredNumber,
+                                                        onNumberChange = { value ->
+                                                            viewModel.changeRequiredMaterialCount(
+                                                                itemName,
+                                                                value
+                                                            )
+                                                        })
                                                 }
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Add,
-                                                contentDescription = null,
-                                                modifier = Modifier.padding(vertical = 5.dp)
-                                            )
+                                                Divider(
+                                                    color = Color.Gray,
+                                                    modifier = Modifier.height(0.3.dp)
+                                                )
+                                            }
                                         }
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                dialogShow.value = true
+                                            }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Add,
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(vertical = 5.dp)
+                                        )
                                     }
                                 }
                                 SearchDialog(
@@ -218,8 +220,8 @@ class PlannerActivity : ComponentActivity() {
                                         .align(Alignment.CenterHorizontally)
                                         .padding(10.dp)
                                 )
-                                LazyColumn(verticalArrangement = Arrangement.spacedBy(Dimension.ListItemPadding)) {
-                                    items(viewModel.selectedOwnedMaterials.keys.toList()) { itemName ->
+                                Column{
+                                    viewModel.selectedOwnedMaterials.keys.toList().forEach { itemName ->
                                         val ownedNumber = remember {
                                             mutableStateOf(viewModel.selectedOwnedMaterials[itemName]!!)
                                         }
@@ -253,22 +255,20 @@ class PlannerActivity : ComponentActivity() {
 
                                         }
                                     }
-                                    item {
-                                        Column(
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center,
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .clickable {
-                                                    dialogShow.value = true
-                                                }
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Add,
-                                                contentDescription = null,
-                                                modifier = Modifier.padding(vertical = 5.dp)
-                                            )
-                                        }
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable {
+                                                dialogShow.value = true
+                                            }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Add,
+                                            contentDescription = null,
+                                            modifier = Modifier.padding(vertical = 5.dp)
+                                        )
                                     }
                                 }
                                 SearchDialog(
@@ -317,8 +317,8 @@ class PlannerActivity : ComponentActivity() {
                                                     .padding(5.dp)
                                                     .fillMaxWidth()
                                             )
-                                            LazyColumn(modifier = Modifier.padding(horizontal = 5.dp)) {
-                                                items(plan.stages) { stage ->
+                                            Column(modifier = Modifier.padding(horizontal = 5.dp)) {
+                                                plan.stages.forEach { stage ->
                                                     ExpandableCard(
                                                         cardContent = {
                                                             Row(
@@ -375,8 +375,8 @@ class PlannerActivity : ComponentActivity() {
                                                     .padding(5.dp)
                                                     .fillMaxWidth()
                                             )
-                                            LazyColumn(modifier = Modifier.padding(5.dp)) {
-                                                items(viewModel.plan.value!!.syntheses) { synthesis ->
+                                            Column(modifier = Modifier.padding(5.dp)) {
+                                                viewModel.plan.value!!.syntheses.forEach { synthesis ->
                                                     Text(
                                                         text = synthesis.target,
                                                         modifier = Modifier.padding(5.dp)
