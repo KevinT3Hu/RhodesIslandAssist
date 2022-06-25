@@ -8,7 +8,7 @@ Contact me at [My email](mailto:kevint3hu@outlook.com)
 
 ## Release
 
-Latest version: 0.3.0-alpha.6
+Latest version: 0.4.0-alpha.7
 
 Latest stable version: none
 
@@ -19,6 +19,7 @@ Download: [Github Releases](https://github.com/KevinT3Hu/RhodesIslandAssist/rele
 - Look up game data concerning items and stages.
 - Plan your stages to get certain items the easiest way.
 - Report stage drops.(This feature has not been fully tested yet. If you encounter any problems, please let me know.)
+- Analyze gacha results.(This feature is getting continuously improved.)
 
 
 ## For Developers

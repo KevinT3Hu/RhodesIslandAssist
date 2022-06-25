@@ -53,4 +53,10 @@
     <string name="hint_clear">清空选择</string>
     <string name="toast_report_success">汇报成功</string>
     <string name="toast_report_fail">汇报失败</string>
+    <string name="title_gacha">抽卡分析</string>
+    <string name="title_dialog_continue">继续</string>
+    <string name="title_dialog_cancel">取消</string>
+    <string name="text_accounts_hint">本应用不会将您的账号或密码储存到本地或上传到云端，请您知悉。</string>
+    <string name="toast_login_fail">获取登录信息失败</string>
+    <string name="title_activity_gacha">抽卡分析器</string>
 </resources>

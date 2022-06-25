@@ -6,10 +6,13 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Timeline
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,15 +20,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
-import com.kevin.rhodesislandassist.ui.activity.AboutActivity
-import com.kevin.rhodesislandassist.ui.activity.MainActivity
-import com.kevin.rhodesislandassist.ui.activity.OpenSourceNoticesActivity
-import com.kevin.rhodesislandassist.ui.activity.PlannerActivity
+import com.kevin.rhodesislandassist.ui.activity.*
 import com.kevin.rhodesislandassist.ui.component.widget.ListGroup
 
 @Composable
 fun More() {
     val context = LocalContext.current
+
+    var showAccountsHintDialog by remember { mutableStateOf(false) }
     val tools = mutableListOf(
         Action(
             title = R.string.title_planner,
@@ -35,6 +37,13 @@ fun More() {
                     Intent(context, PlannerActivity::class.java),
                     ActivityOptions.makeSceneTransitionAnimation(context as MainActivity).toBundle()
                 )
+            }
+        ),
+        Action(
+            title = R.string.title_gacha,
+            icon = Icons.Filled.List,
+            action = {
+                showAccountsHintDialog = true
             }
         )
     )
@@ -60,6 +69,29 @@ fun More() {
             }
         )
     )
+    if (showAccountsHintDialog) {
+        AlertDialog(
+            onDismissRequest = { showAccountsHintDialog = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    context.startActivity(
+                        Intent(context, GachaActivity::class.java)
+                    )
+                    showAccountsHintDialog = false
+                }) {
+                    Text(text = stringResource(id = R.string.title_dialog_continue))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showAccountsHintDialog = false }) {
+                    Text(text = stringResource(id = R.string.title_dialog_cancel))
+                }
+            },
+            text = {
+                Text(text = stringResource(id = R.string.text_accounts_hint))
+            }
+        )
+    }
     Column {
         ListGroup(
             data = tools,

@@ -54,4 +54,10 @@
     <string name="hint_clear">Clear selections</string>
     <string name="toast_report_success">Report success</string>
     <string name="toast_report_fail">Report fail</string>
+    <string name="title_gacha">Gacha analysis</string>
+    <string name="title_dialog_continue">Continue</string>
+    <string name="title_dialog_cancel">Cancel</string>
+    <string name="text_accounts_hint">It is fair to know that this app shall not store your username ot password locally or upload to the cloud.</string>
+    <string name="toast_login_fail">Fail to get login info</string>
+    <string name="title_activity_gacha">GachaActivity</string>
 </resources>

@@ -18,6 +18,11 @@
         android:theme="@style/Theme.RhodesIslandAssist"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.GachaActivity"
+            android:exported="false"
+            android:label="@string/title_activity_gacha"
+            android:theme="@style/Theme.RhodesIslandAssist" />
+        <activity
             android:name=".ui.activity.AboutActivity"
             android:exported="false"
             android:label="@string/title_activity_about"
