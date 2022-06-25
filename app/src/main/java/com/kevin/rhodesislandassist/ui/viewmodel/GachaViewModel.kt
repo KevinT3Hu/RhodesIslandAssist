@@ -36,6 +36,11 @@ class GachaViewModel : ViewModel() {
 
     val cards = mutableStateListOf<Card>()
     val pieSlices = mutableStateListOf<PieSlice>()
+    val pools = mutableStateListOf<String>()
+
+    val isFiltered = mutableStateOf(false)
+    val cardsFiltered = mutableStateListOf<Card>()
+    val pieSlicesFiltered = mutableStateListOf<PieSlice>()
 
     val loginStatus = mutableStateOf(false)
     val token = mutableStateOf("")
@@ -45,8 +50,8 @@ class GachaViewModel : ViewModel() {
             override fun onResponse(call: Call<GachaResponse>, response: Response<GachaResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     cards.addAll(response.body()!!.cards)
-                    for (i in 1..getPageCount(response.body()!!.total)) {
-                        getPage(context, i)
+                    for (i in 2..getPageCount(response.body()!!.total)) {
+                        getPage(context, i, i == getPageCount(response.body()!!.total))
                     }
                     Log.i("gacha", "${response.body()!!.total}")
                 }
@@ -58,12 +63,64 @@ class GachaViewModel : ViewModel() {
         })
     }
 
-    private fun getPage(context: Context, i: Int) {
+    fun filterByPool(pool: String) {
+        if (pools.contains(pool)) {
+            isFiltered.value = true
+            cardsFiltered.clear()
+            pieSlicesFiltered.clear()
+            val map = mutableMapOf(Pair(2, 0), Pair(3, 0), Pair(4, 0), Pair(5, 0))
+            cards.forEach {
+                if (it.pool == pool) {
+                    cardsFiltered.add(it)
+                    map[it.rarity] = map[it.rarity]!!.plus(1)
+                }
+            }
+            map.forEach {
+                pieSlicesFiltered.add(
+                    PieSlice(
+                        "${it.key}",
+                        it.value.toFloat(),
+                        getRarityColor(it.key)
+                    )
+                )
+            }
+        }
+    }
+
+    fun clearFilter() {
+        isFiltered.value = false
+        cardsFiltered.clear()
+        pieSlicesFiltered.clear()
+        cardsFiltered.addAll(cards)
+        pieSlicesFiltered.addAll(pieSlices)
+    }
+
+    fun getRarityRate(rarity: Int): Float {
+        var total = 0
+        var count = 0
+        pieSlicesFiltered.forEach {
+            total += it.number.toInt()
+            if (it.name == "$rarity") {
+                count = it.number.toInt()
+            }
+        }
+        return count * 100 / total.toFloat()
+    }
+
+    private fun getPage(context: Context, i: Int, isLast: Boolean) {
         api.getGacha(i, token.value).enqueue(object : Callback<GachaResponse> {
             override fun onResponse(call: Call<GachaResponse>, response: Response<GachaResponse>) {
                 if (response.isSuccessful && response.body() != null) {
                     cards.addAll(response.body()!!.cards)
-                    getPieSlices()
+                    if (isLast) {
+                        getPieSlices()
+                        cards.forEach {
+                            if (!pools.contains(it.pool)) {
+                                pools.add(it.pool)
+                            }
+                        }
+                        cardsFiltered.addAll(cards)
+                    }
                 }
             }
 
@@ -85,6 +142,7 @@ class GachaViewModel : ViewModel() {
         map.forEach {
             pieSlices.add(PieSlice("${it.key}", it.value.toFloat(), getRarityColor(it.key)))
         }
+        pieSlicesFiltered.addAll(pieSlices)
     }
 
     fun getRarityColor(rarity: Int) = when (rarity) {

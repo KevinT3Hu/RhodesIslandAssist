@@ -2,6 +2,7 @@ package com.kevin.rhodesislandassist.ui.component
 
 import android.app.ActivityOptions
 import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -22,83 +23,97 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.models.StageType
 import com.kevin.rhodesislandassist.ui.activity.DetailActivity
 import com.kevin.rhodesislandassist.ui.activity.MainActivity
 import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalUnitApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalUnitApi::class,
+    ExperimentalFoundationApi::class
+)
 @Composable
 fun Search(viewModel: DataViewModel) {
     viewModel.fetchDataFromSearchText()
     val context = LocalContext.current
-    Column(
+    LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painterResource(id = R.drawable.ic_logo),
-            contentDescription = null,
-            modifier = Modifier.padding(bottom = 20.dp)
-        )
-        OutlinedTextField(
-            value = viewModel.searchText,
-            onValueChange = {
-                viewModel.searchText = it
-                viewModel.fetchDataFromSearchText()
-            },
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
-            trailingIcon = {
-                IconButton(onClick = {
-                    viewModel.searchText = ""
-                }) {
-                    Icon(Icons.Filled.Clear, contentDescription = null)
-                }
-            },
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-        )
-        Row(horizontalArrangement = Arrangement.Start) {
-            ElevatedFilterChip(
-                selected = viewModel.itemChipSelected,
-                onClick = {
-                    viewModel.itemChipSelected = !viewModel.itemChipSelected
-                    viewModel.fetchDataFromSearchText()
-                },
-                label = {
-                    Text(text = stringResource(id = R.string.chip_item))
-                },
-                selectedIcon = {
-                    Icon(Icons.Filled.Done, contentDescription = null)
-                },
-                modifier = Modifier.padding(end = 10.dp)
-            )
-            ElevatedFilterChip(
-                selected = viewModel.stageChipSelected,
-                onClick = {
-                    viewModel.stageChipSelected = !viewModel.stageChipSelected
-                    viewModel.fetchDataFromSearchText()
-                },
-                label = {
-                    Text(text = stringResource(id = R.string.chip_stage))
-                },
-                selectedIcon = {
-                    Icon(Icons.Filled.Done, contentDescription = null)
-                }
+        item {
+            Image(
+                painterResource(id = R.drawable.ic_logo),
+                contentDescription = null,
+                modifier = Modifier.padding(bottom = 20.dp)
             )
         }
-        LazyColumn {
-            items(viewModel.gameItemSearchResultDataSet) { item ->
-                ElevatedCard(
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
-                        .fillMaxWidth(),
-                    onClick = {
-                        context.startActivity(
-                            Intent(context, DetailActivity::class.java)
-                                .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeItem)
-                                .putExtra(DetailActivity.ExtraDataItemOrStage, item),
+        stickyHeader {
+            Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.zIndex(1f)) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.searchText,
+                        onValueChange = {
+                            viewModel.searchText = it
+                            viewModel.fetchDataFromSearchText()
+                        },
+                        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                viewModel.searchText = ""
+                            }) {
+                                Icon(Icons.Filled.Clear, contentDescription = null)
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth()
+                    )
+                    Row(horizontalArrangement = Arrangement.Start) {
+                        ElevatedFilterChip(
+                            selected = viewModel.itemChipSelected,
+                            onClick = {
+                                viewModel.itemChipSelected = !viewModel.itemChipSelected
+                                viewModel.fetchDataFromSearchText()
+                            },
+                            label = {
+                                Text(text = stringResource(id = R.string.chip_item))
+                            },
+                            selectedIcon = {
+                                Icon(Icons.Filled.Done, contentDescription = null)
+                            },
+                            modifier = Modifier.padding(end = 10.dp)
+                        )
+                        ElevatedFilterChip(
+                            selected = viewModel.stageChipSelected,
+                            onClick = {
+                                viewModel.stageChipSelected = !viewModel.stageChipSelected
+                                viewModel.fetchDataFromSearchText()
+                            },
+                            label = {
+                                Text(text = stringResource(id = R.string.chip_stage))
+                            },
+                            selectedIcon = {
+                                Icon(Icons.Filled.Done, contentDescription = null)
+                            }
+                        )
+                    }
+                }
+            }
+        }
+        items(viewModel.gameItemSearchResultDataSet) { item ->
+            ElevatedCard(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                    .fillMaxWidth(),
+                onClick = {
+                    context.startActivity(
+                        Intent(context, DetailActivity::class.java)
+                            .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeItem)
+                            .putExtra(DetailActivity.ExtraDataItemOrStage, item),
                             ActivityOptions.makeSceneTransitionAnimation(context as MainActivity)
                                 .toBundle()
                         )
@@ -179,6 +194,5 @@ fun Search(viewModel: DataViewModel) {
                     }
                 }
             }
-        }
     }
 }

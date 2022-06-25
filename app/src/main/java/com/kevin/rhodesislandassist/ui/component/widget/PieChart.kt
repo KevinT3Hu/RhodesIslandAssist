@@ -2,7 +2,6 @@ package com.kevin.rhodesislandassist.ui.component.widget
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.PI
 import kotlin.math.atan2
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PieChart(
     pieSlices: List<PieSlice>,

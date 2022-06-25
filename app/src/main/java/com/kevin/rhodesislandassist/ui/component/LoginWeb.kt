@@ -5,6 +5,7 @@ import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -28,9 +29,9 @@ fun LoginWeb(loginStatus: MutableState<Boolean>, token: MutableState<String>) {
                 title = {
                     Column {
                         Text(text = webState.content.getCurrentUrl() ?: "Loading")
-                    }
-                    if (webState.isLoading) {
-                        LinearProgressIndicator()
+                        if (webState.isLoading) {
+                            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                        }
                     }
                 }
             )
