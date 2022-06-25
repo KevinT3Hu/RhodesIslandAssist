@@ -8,7 +8,7 @@ Contact me at [My email](mailto:kevint3hu@outlook.com)
 
 ## Release
 
-Latest version: 0.4.0-alpha.7
+Latest version: 0.4.1-alpha.8
 
 Latest stable version: none
 
