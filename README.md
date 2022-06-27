@@ -1,5 +1,7 @@
 # Rhodes Island Assist
 
+![Build Release](https://github.com/KevinT3Hu/RhodesIslandAssist/actions/workflows/main.yml/badge.svg)
+
 [中文版文档](https://github.com/KevinT3Hu/RhodesIslandAssist/blob/main/README_zh_cn.md)
 
 An app helping users get easy access to ArkNights game data and planner.
