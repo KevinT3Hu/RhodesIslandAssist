@@ -52,6 +52,7 @@ class UploadActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModel: UploadViewModel by viewModels()
+                    val snackbarHostState = remember { SnackbarHostState() }
                     Scaffold(
                         topBar = {
                             SmallTopAppBar(
@@ -63,11 +64,13 @@ class UploadActivity : ComponentActivity() {
                                 title = { Text(text = "${stringResource(id = R.string.title_activity_upload)}:${stage.code}-${stage.name}") }
                             )
                         },
+                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
                         floatingActionButton = {
                             FloatingActionButton(onClick = {
                                 viewModel.report(
                                     this@UploadActivity,
-                                    stage.stageId!!
+                                    stage.stageId!!,
+                                    snackbarHostState
                                 )
                             }) {
                                 Icon(Icons.Filled.Upload, contentDescription = null)
@@ -80,7 +83,7 @@ class UploadActivity : ComponentActivity() {
                                 .padding(horizontal = Dimension.HorizontalPadding)
                                 .verticalScroll(rememberScrollState())
                         ) {
-                            var commonDrops = listOf<GameStage.DropInfo>()
+                            var commonDrops: List<GameStage.DropInfo>
                             var extraDrops = listOf<GameStage.DropInfo>()
                             stage.stageDrops!!.partition {
                                 it.dropType == GameStage.DropType.COMMON
@@ -91,24 +94,26 @@ class UploadActivity : ComponentActivity() {
                                 }.first
                             }
 
+                            Text(
+                                text = stringResource(id = R.string.hint_common_drop),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .padding(top = 5.dp)
+                            )
                             Card(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    text = stringResource(id = R.string.hint_common_drop),
-                                    modifier = Modifier
-                                        .padding(5.dp)
-                                        .padding(top = 5.dp)
-                                )
                                 DropColumn(items = commonDrops, viewModel = viewModel)
                             }
-                            Card(modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 10.dp)) {
-                                Text(
-                                    text = stringResource(id = R.string.hint_extra_drop),
-                                    modifier = Modifier
-                                        .padding(5.dp)
-                                        .padding(top = 5.dp)
-                                )
+                            Text(
+                                text = stringResource(id = R.string.hint_extra_drop),
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .padding(top = 5.dp)
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 10.dp)
+                            ) {
                                 DropColumn(items = extraDrops, viewModel = viewModel)
                             }
                         }

@@ -10,7 +10,7 @@ Contact me at [My email](mailto:kevint3hu@outlook.com)
 
 ## Release
 
-Latest version: 0.4.1-alpha.8
+Latest version: 0.4.2-alpha.9
 
 Latest stable version: none
 

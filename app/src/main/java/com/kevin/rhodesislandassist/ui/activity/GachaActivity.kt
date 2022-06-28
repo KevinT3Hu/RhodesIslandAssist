@@ -23,11 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
-import com.kevin.rhodesislandassist.ui.activity.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.component.LoginWeb
 import com.kevin.rhodesislandassist.ui.component.widget.PieChart
 import com.kevin.rhodesislandassist.ui.theme.Dimension
 import com.kevin.rhodesislandassist.ui.theme.DividerColor
+import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.viewmodel.GachaViewModel
 
 class GachaActivity : ComponentActivity() {

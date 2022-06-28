@@ -28,7 +28,7 @@ fun LoginWeb(loginStatus: MutableState<Boolean>, token: MutableState<String>) {
             SmallTopAppBar(
                 title = {
                     Column {
-                        Text(text = webState.content.getCurrentUrl() ?: "Loading")
+                        Text(text = webState.pageTitle ?: "Loading")
                         if (webState.isLoading) {
                             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
                         }

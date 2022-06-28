@@ -4,6 +4,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,11 +24,12 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.models.StageType
 import com.kevin.rhodesislandassist.ui.activity.DetailActivity
 import com.kevin.rhodesislandassist.ui.activity.MainActivity
+import com.kevin.rhodesislandassist.ui.theme.Dimension
+import com.kevin.rhodesislandassist.ui.theme.DividerColor
 import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 
 @OptIn(
@@ -42,14 +44,20 @@ fun Search(viewModel: DataViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Image(
-                painterResource(id = R.drawable.ic_logo),
-                contentDescription = null,
-                modifier = Modifier.padding(bottom = 20.dp)
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.background,
+                shadowElevation = 4.dp,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(
+                    painterResource(id = R.drawable.ic_logo),
+                    contentDescription = null,
+                    modifier = Modifier.padding(bottom = 20.dp)
+                )
+            }
         }
         stickyHeader {
-            Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.zIndex(1f)) {
+            Surface(color = MaterialTheme.colorScheme.background, shadowElevation = 2.dp) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
@@ -105,53 +113,53 @@ fun Search(viewModel: DataViewModel) {
             }
         }
         items(viewModel.gameItemSearchResultDataSet) { item ->
-            ElevatedCard(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .fillMaxWidth(),
-                onClick = {
-                    context.startActivity(
-                        Intent(context, DetailActivity::class.java)
-                            .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeItem)
-                            .putExtra(DetailActivity.ExtraDataItemOrStage, item),
-                            ActivityOptions.makeSceneTransitionAnimation(context as MainActivity)
-                                .toBundle()
+            Column(modifier = Modifier.clickable {
+                context.startActivity(
+                    Intent(context, DetailActivity::class.java)
+                        .putExtra(
+                            DetailActivity.ExtraTagType,
+                            DetailActivity.TypeItem
                         )
-                    },
+                        .putExtra(DetailActivity.ExtraDataItemOrStage, item),
+                    ActivityOptions
+                        .makeSceneTransitionAnimation(context as MainActivity)
+                        .toBundle()
+                )
+            }) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxSize()
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 10.dp)
-                    ) {
-                        Image(
-                            Icons.Filled.Category,
-                            contentDescription = null,
-                            colorFilter = if (isSystemInDarkTheme()) {
-                                ColorFilter.tint(Color.White)
-                            } else {
-                                null
-                            }
-                        )
-                        Column(
-                            horizontalAlignment = Alignment.Start,
-                            modifier = Modifier.fillMaxWidth(0.6f)
-                        ) {
-                            Text(
-                                text = item.name ?: "",
-                                fontSize = TextUnit(20f, TextUnitType.Sp),
-                                modifier = Modifier.padding(vertical = 7.dp)
-                            )
-                            Text(
-                                text = item.description ?: "",
-                                fontSize = TextUnit(12f, TextUnitType.Sp)
-                            )
+                    Image(
+                        Icons.Filled.Category,
+                        contentDescription = null,
+                        colorFilter = if (isSystemInDarkTheme()) {
+                            ColorFilter.tint(Color.White)
+                        } else {
+                            null
                         }
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth(0.6f)
+                    ) {
+                        Text(
+                            text = item.name ?: "",
+                            fontSize = TextUnit(20f, TextUnitType.Sp),
+                            modifier = Modifier.padding(vertical = 7.dp)
+                        )
                     }
                 }
+                Divider(
+                    color = DividerColor,
+                    modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)
+                )
             }
+
+        }
             items(viewModel.gameStageSearchResultDataSet) { stage ->
                 ElevatedCard(
                     modifier = Modifier

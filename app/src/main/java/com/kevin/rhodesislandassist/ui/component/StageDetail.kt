@@ -67,16 +67,22 @@ fun StageDetail(stage: GameStage?, viewModel: DetailViewModel) {
                 .padding(it)
                 .padding(7.dp)
         ) {
-            Text(
-                text = "${stringResource(id = R.string.hint_ap_cost)}：${stage.apCost}",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 30.dp, vertical = 10.dp)
-            )
             SwipeRefresh(
                 state = refreshState,
                 onRefresh = { viewModel.refreshStage(stage.stageId!!, context, refreshState) }) {
                 LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
+                    item {
+                        Text(text = stage.desc!!, modifier = Modifier.padding(10.dp))
+                    }
+                    item {
+                        Text(
+                            text = "${stringResource(id = R.string.hint_ap_cost)}：${stage.apCost}",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 10.dp)
+                                .padding(bottom = 10.dp)
+                        )
+                    }
                     items(viewModel.matrixes) { matrix ->
                         val item = viewModel.getItemById(matrix.itemId)
                         if (item != null) {

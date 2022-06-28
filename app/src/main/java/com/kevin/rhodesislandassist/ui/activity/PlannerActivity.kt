@@ -33,6 +33,7 @@ import com.kevin.rhodesislandassist.ui.component.widget.ExpandableCard
 import com.kevin.rhodesislandassist.ui.component.widget.NumberSelector
 import com.kevin.rhodesislandassist.ui.component.widget.SearchDialog
 import com.kevin.rhodesislandassist.ui.theme.Dimension
+import com.kevin.rhodesislandassist.ui.theme.DividerColor
 import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
 import com.kevin.rhodesislandassist.ui.viewmodel.PlannerViewModel
 
@@ -138,21 +139,34 @@ class PlannerActivity : ComponentActivity() {
                             horizontalAlignment = Alignment.CenterHorizontally,
 
                             ) {
-                            Card(modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)) {
-                                val dialogShow = remember { mutableStateOf(false) }
+                            val neededDialogShow = remember { mutableStateOf(false) }
+                            val ownedDialogShow = remember { mutableStateOf(false) }
+                            Row(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                            ) {
                                 Text(
                                     text = stringResource(id = R.string.hint_materials_required),
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(10.dp)
+                                        .padding(vertical = 10.dp)
+                                        .weight(1f)
                                 )
+                                IconButton(onClick = { neededDialogShow.value = true }) {
+                                    Icon(Icons.Filled.Add, contentDescription = null)
+                                }
+                            }
+
+                            Card(modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)) {
                                 Column {
                                     viewModel.selectedRequiredMaterials.keys.toList()
                                         .forEach { itemName ->
                                             val requiredNumber = remember {
                                                 mutableStateOf(viewModel.selectedRequiredMaterials[itemName]!!)
                                             }
-                                            Column(horizontalAlignment = Alignment.CenterHorizontally,
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
                                                 verticalArrangement = Arrangement.SpaceAround,
                                                 modifier = Modifier
                                                     .padding(
@@ -181,24 +195,9 @@ class PlannerActivity : ComponentActivity() {
                                                 )
                                             }
                                         }
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                dialogShow.value = true
-                                            }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Add,
-                                            contentDescription = null,
-                                            modifier = Modifier.padding(vertical = 5.dp)
-                                        )
-                                    }
                                 }
                                 SearchDialog(
-                                    show = dialogShow,
+                                    show = neededDialogShow,
                                     searchSource = viewModel.getShowUnselectedRequiredMaterials(),
                                     onConfirm = { reqItems ->
                                         reqItems.forEach { reqItem ->
@@ -207,24 +206,40 @@ class PlannerActivity : ComponentActivity() {
                                     }
                                 )
                             }
+                            Divider(
+                                color = DividerColor,
+                                modifier = Modifier.padding(
+                                    vertical = 10.dp,
+                                    horizontal = Dimension.HorizontalPadding
+                                )
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.hint_materials_owned),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp)
+                                        .weight(1f)
+                                )
+                                IconButton(onClick = { ownedDialogShow.value = true }) {
+                                    Icon(Icons.Filled.Add, contentDescription = null)
+                                }
+                            }
                             Card(
                                 modifier = Modifier
                                     .padding(top = 10.dp)
                                     .padding(horizontal = Dimension.HorizontalPadding)
                             ) {
-                                val dialogShow = remember { mutableStateOf(false) }
-                                Text(
-                                    text = stringResource(id = R.string.hint_materials_owned),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .align(Alignment.CenterHorizontally)
-                                        .padding(10.dp)
-                                )
-                                Column{
-                                    viewModel.selectedOwnedMaterials.keys.toList().forEach { itemName ->
-                                        val ownedNumber = remember {
-                                            mutableStateOf(viewModel.selectedOwnedMaterials[itemName]!!)
-                                        }
+                                Column {
+                                    viewModel.selectedOwnedMaterials.keys.toList()
+                                        .forEach { itemName ->
+                                            val ownedNumber = remember {
+                                                mutableStateOf(viewModel.selectedOwnedMaterials[itemName]!!)
+                                            }
                                         Column(horizontalAlignment = Alignment.CenterHorizontally,
                                             verticalArrangement = Arrangement.SpaceAround,
                                             modifier = Modifier
@@ -255,24 +270,9 @@ class PlannerActivity : ComponentActivity() {
 
                                         }
                                     }
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.Center,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .clickable {
-                                                dialogShow.value = true
-                                            }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Add,
-                                            contentDescription = null,
-                                            modifier = Modifier.padding(vertical = 5.dp)
-                                        )
-                                    }
                                 }
                                 SearchDialog(
-                                    show = dialogShow,
+                                    show = ownedDialogShow,
                                     searchSource = viewModel.getShowUnselectedOwnedMaterials(),
                                     onConfirm = { reqItems ->
                                         reqItems.forEach { ownedItem ->
@@ -288,6 +288,7 @@ class PlannerActivity : ComponentActivity() {
                                 modifier = Modifier.padding(vertical = 5.dp)
                             ) {
                                 Icon(Icons.Filled.Timeline, contentDescription = null)
+                                Spacer(modifier = Modifier.width(10.dp))
                                 Text(text = stringResource(id = R.string.hint_plan))
                             }
                             AnimatedContent(targetState = viewModel.planStatus) { status ->

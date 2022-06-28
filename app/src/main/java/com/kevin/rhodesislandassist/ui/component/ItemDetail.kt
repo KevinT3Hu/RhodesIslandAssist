@@ -45,6 +45,9 @@ fun ItemDetail(item: GameItem?, viewModel: DetailViewModel) {
                 state = refreshState,
                 onRefresh = { viewModel.refreshItem(item.itemId!!, context, refreshState) }) {
                 LazyColumn(modifier = Modifier.padding(top = 5.dp)) {
+                    item {
+                        Text(text = item.description!!, modifier = Modifier.padding(10.dp))
+                    }
                     items(viewModel.matrixes) { matrix ->
                         val stage = viewModel.getStageById(matrix.stageId)
                         if (stage != null) {
