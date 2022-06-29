@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             RhodesIslandAssistTheme {
                 val viewModel: DataViewModel by viewModels()
+                viewModel.initDataSet(this)
                 App(viewModel)
             }
         }

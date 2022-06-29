@@ -10,7 +10,7 @@ Contact me at [My email](mailto:kevint3hu@outlook.com)
 
 ## Release
 
-Latest version: 0.4.2-alpha.9
+Latest version: 0.4.3-alpha.10
 
 Latest stable version: none
 
@@ -34,13 +34,13 @@ You can contact me at [My email](mailto:kevint3hu@outlook.com)
 
 ## TODO
 
-- [ ] Reformat code style and add annotations to make the code clear
 - [ ] Adjust the user interface so it looks nicer
 - [ ] Redraw the app icon
 - [x] Add international support
 - [x] Implement report feature
 - [ ] Error handling in report feature
 - [ ] May implement operator info lookup
+- [ ] Recruit keywords combination lookup
 
 ## Acknowledgment
 

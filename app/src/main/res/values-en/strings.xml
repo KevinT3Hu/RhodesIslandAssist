@@ -62,4 +62,7 @@
     <string name="title_activity_gacha">GachaActivity</string>
     <string name="title_clear_filter">Clear filter</string>
     <string name="hint_rarity_rate">%1$d operator rate</string>
+    <string name="title_refresh_tables">Refresh game data</string>
+    <string name="toast_refreshed_today">You have already refreshed today</string>
+    <string name="toast_refresh">Refresh</string>
 </resources>

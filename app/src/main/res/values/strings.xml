@@ -61,4 +61,8 @@
     <string name="title_activity_gacha">抽卡分析器</string>
     <string name="title_clear_filter">重置过滤</string>
     <string name="hint_rarity_rate">%1$d星干员出率</string>
+    <string name="title_refresh_tables">刷新游戏内数据</string>
+    <string name="settings_preferences" translatable="false">settings_preferences</string>
+    <string name="toast_refreshed_today">今天已经刷新过了，请明天再来</string>
+    <string name="toast_refresh">刷新</string>
 </resources>
