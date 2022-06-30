@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.ui.activity.*
 import com.kevin.rhodesislandassist.ui.component.widget.ListGroup
+import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 import com.kevin.rhodesislandassist.util.getCurrentDate
 import com.kevin.rhodesislandassist.util.json.PreferencesKeyRefresh
-import com.kevin.rhodesislandassist.util.json.initData
 
 @Composable
-fun More() {
+fun More(viewModel: DataViewModel) {
     val context = LocalContext.current
 
     var showAccountsHintDialog by remember { mutableStateOf(false) }
@@ -66,7 +66,7 @@ fun More() {
                     Toast.makeText(context, R.string.toast_refreshed_today, Toast.LENGTH_SHORT)
                         .show()
                 } else {
-                    initData(context, true)
+                    viewModel.initDataSet(context, true)
                     Toast.makeText(context, R.string.toast_refresh, Toast.LENGTH_SHORT).show()
                 }
             }

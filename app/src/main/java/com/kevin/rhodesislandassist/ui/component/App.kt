@@ -46,7 +46,7 @@ private fun getSelectedItem(route: String?): Page {
 fun App(viewModel: DataViewModel) {
     val navItems = listOf(Page.WelcomePage, Page.SearchPage, Page.MorePage)
     val navController = rememberNavController()
-    val context = LocalContext.current
+    LocalContext.current
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = currentBackStackEntry?.destination?.route
     Surface {
@@ -103,7 +103,7 @@ fun App(viewModel: DataViewModel) {
             ) {
                 composable(Page.WelcomePage.route) { Welcome() }
                 composable(Page.SearchPage.route) { Search(viewModel) }
-                composable(Page.MorePage.route) { More() }
+                composable(Page.MorePage.route) { More(viewModel) }
             }
         }
     }

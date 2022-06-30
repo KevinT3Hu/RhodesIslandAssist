@@ -10,6 +10,7 @@ import com.kevin.rhodesislandassist.util.getCurrentDate
 import org.apache.commons.io.IOUtil
 import org.json.JSONObject
 import java.io.File
+import java.net.SocketException
 import java.net.URL
 
 const val ItemFileName = "item_table.json"
@@ -19,8 +20,8 @@ const val PreferencesKeyRefresh = "refresh"
 
 private const val FileDownloadBaseUrl = "https://kevin-game-data.oss-cn-hangzhou.aliyuncs.com"
 
-fun initData(context: Context, forceRefresh: Boolean = false) {
-    val itemFile = fileHandler(context, ItemFileName, forceRefresh)
+fun initData(context: Context, forceRefresh: Boolean = false): Boolean {
+    val itemFile = fileHandler(context, ItemFileName, forceRefresh) ?: return false
     val items = getItemsFromJson(JSONObject(itemFile.readText()))
     val itemsMap = mutableMapOf<String, GameItem>()
     items.forEach {
@@ -29,7 +30,7 @@ fun initData(context: Context, forceRefresh: Boolean = false) {
         }
     }
     DataSetRepository.gameItemDataSet = itemsMap
-    val stageFile = fileHandler(context, StageFileName, forceRefresh)
+    val stageFile = fileHandler(context, StageFileName, forceRefresh) ?: return false
     val stages = getStagesFromJson(JSONObject(stageFile.readText()))
     val stagesMap = mutableMapOf<String, GameStage>()
     stages.forEach {
@@ -38,22 +39,29 @@ fun initData(context: Context, forceRefresh: Boolean = false) {
         }
     }
     DataSetRepository.gameStageDataSet = stagesMap
+    return true
+
 }
 
-private fun fileHandler(context: Context, fileName: String, forceRefresh: Boolean): File {
+private fun fileHandler(context: Context, fileName: String, forceRefresh: Boolean): File? {
     if (forceRefresh || (!(File(context.filesDir, fileName).exists()))) {
-        context.getSharedPreferences(
-            context.resources.getString(R.string.settings_preferences),
-            Context.MODE_PRIVATE
-        ).edit().putString(
-            PreferencesKeyRefresh, getCurrentDate()
-        ).apply()
-        URL("${FileDownloadBaseUrl}/${fileName}").openStream().use {
-            val json = IOUtil.toString(it)
-            val file = File(context.filesDir, fileName)
-            file.createNewFile()
-            file.writeBytes(json.encodeToByteArray())
+        try {
+            URL("${FileDownloadBaseUrl}/${fileName}").openStream().use {
+                val json = IOUtil.toString(it)
+                val file = File(context.filesDir, fileName)
+                file.createNewFile()
+                file.writeBytes(json.encodeToByteArray())
+            }
+            context.getSharedPreferences(
+                context.resources.getString(R.string.settings_preferences),
+                Context.MODE_PRIVATE
+            ).edit().putString(
+                PreferencesKeyRefresh, getCurrentDate()
+            ).apply()
+        } catch (e: SocketException) {
+            return null
         }
+
     }
     return File(context.filesDir, fileName)
 }
