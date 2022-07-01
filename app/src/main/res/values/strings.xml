@@ -65,4 +65,22 @@
     <string name="settings_preferences" translatable="false">settings_preferences</string>
     <string name="toast_refreshed_today">今天已经刷新过了，请明天再来</string>
     <string name="toast_refresh">刷新</string>
+    <string name="chip_char">干员</string>
+    <string name="prof_medic">医疗</string>
+    <string name="prof_caster">术师</string>
+    <string name="prof_pioneer">先锋</string>
+    <string name="prof_warrior">近卫</string>
+    <string name="prof_sniper">狙击</string>
+    <string name="prof_tank">坦克</string>
+    <string name="prof_support">辅助</string>
+    <string name="prof_special">特种</string>
+    <string name="text_phase">精英</string>
+    <string name="text_level">级</string>
+    <string name="title_max_hp">最大生命值</string>
+    <string name="title_atk">攻击力</string>
+    <string name="title_def">防御力</string>
+    <string name="title_magic_resistance">法术抗性</string>
+    <string name="title_cost">初始费用</string>
+    <string name="title_respawn_time">再部署时间</string>
+    <string name="title_atk_speed">攻击速度</string>
 </resources>

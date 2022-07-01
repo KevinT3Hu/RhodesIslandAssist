@@ -61,7 +61,7 @@ fun StageDetailCard(
                                 DetailActivity.TypeItem
                             )
                             .putExtra(
-                                DetailActivity.ExtraDataItemOrStage,
+                                DetailActivity.ExtraData,
                                 item
                             ),
                         ActivityOptions

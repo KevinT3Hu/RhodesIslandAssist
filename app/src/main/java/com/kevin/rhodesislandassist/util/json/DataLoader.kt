@@ -3,6 +3,7 @@ package com.kevin.rhodesislandassist.util.json
 import android.content.Context
 import com.kevin.rhodesislandassist.DataSetRepository
 import com.kevin.rhodesislandassist.R
+import com.kevin.rhodesislandassist.models.Character
 import com.kevin.rhodesislandassist.models.Difficulty
 import com.kevin.rhodesislandassist.models.GameItem
 import com.kevin.rhodesislandassist.models.GameStage
@@ -15,12 +16,14 @@ import java.net.URL
 
 const val ItemFileName = "item_table.json"
 const val StageFileName = "stage_table.json"
+const val CharacterFileName = "character_table.json"
 
 const val PreferencesKeyRefresh = "refresh"
 
 private const val FileDownloadBaseUrl = "https://kevin-game-data.oss-cn-hangzhou.aliyuncs.com"
 
 fun initData(context: Context, forceRefresh: Boolean = false): Boolean {
+
     val itemFile = fileHandler(context, ItemFileName, forceRefresh) ?: return false
     val items = getItemsFromJson(JSONObject(itemFile.readText()))
     val itemsMap = mutableMapOf<String, GameItem>()
@@ -30,6 +33,7 @@ fun initData(context: Context, forceRefresh: Boolean = false): Boolean {
         }
     }
     DataSetRepository.gameItemDataSet = itemsMap
+
     val stageFile = fileHandler(context, StageFileName, forceRefresh) ?: return false
     val stages = getStagesFromJson(JSONObject(stageFile.readText()))
     val stagesMap = mutableMapOf<String, GameStage>()
@@ -39,6 +43,14 @@ fun initData(context: Context, forceRefresh: Boolean = false): Boolean {
         }
     }
     DataSetRepository.gameStageDataSet = stagesMap
+
+    val characterFile = fileHandler(context, CharacterFileName, forceRefresh) ?: return false
+    val characters = getCharactersFromJson(JSONObject(characterFile.readText()))
+    val charactersMap = mutableMapOf<String, Character>()
+    characters.forEach {
+        charactersMap[it.name] = it
+    }
+    DataSetRepository.characterDataSet = charactersMap
     return true
 
 }

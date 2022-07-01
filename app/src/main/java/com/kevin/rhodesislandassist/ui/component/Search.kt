@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +31,8 @@ import com.kevin.rhodesislandassist.ui.activity.DetailActivity
 import com.kevin.rhodesislandassist.ui.activity.MainActivity
 import com.kevin.rhodesislandassist.ui.theme.Dimension
 import com.kevin.rhodesislandassist.ui.theme.DividerColor
+import com.kevin.rhodesislandassist.ui.theme.ReverseColor
+import com.kevin.rhodesislandassist.ui.theme.rarityColor
 import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 
 @OptIn(
@@ -38,8 +41,8 @@ import com.kevin.rhodesislandassist.ui.viewmodel.DataViewModel
 )
 @Composable
 fun Search(viewModel: DataViewModel) {
-    viewModel.fetchDataFromSearchText()
     val context = LocalContext.current
+    viewModel.fetchDataFromSearchText(context)
     LazyColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,7 +69,7 @@ fun Search(viewModel: DataViewModel) {
                         value = viewModel.searchText,
                         onValueChange = {
                             viewModel.searchText = it
-                            viewModel.fetchDataFromSearchText()
+                            viewModel.fetchDataFromSearchText(context)
                         },
                         leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                         trailingIcon = {
@@ -80,33 +83,61 @@ fun Search(viewModel: DataViewModel) {
                             .padding(10.dp)
                             .fillMaxWidth()
                     )
-                    Row(horizontalArrangement = Arrangement.Start) {
-                        ElevatedFilterChip(
-                            selected = viewModel.itemChipSelected,
-                            onClick = {
-                                viewModel.itemChipSelected = !viewModel.itemChipSelected
-                                viewModel.fetchDataFromSearchText()
-                            },
-                            label = {
-                                Text(text = stringResource(id = R.string.chip_item))
-                            },
-                            selectedIcon = {
-                                Icon(Icons.Filled.Done, contentDescription = null)
-                            },
-                            modifier = Modifier.padding(end = 10.dp)
-                        )
-                        ElevatedFilterChip(
-                            selected = viewModel.stageChipSelected,
-                            onClick = {
-                                viewModel.stageChipSelected = !viewModel.stageChipSelected
-                                viewModel.fetchDataFromSearchText()
-                            },
-                            label = {
-                                Text(text = stringResource(id = R.string.chip_stage))
-                            },
-                            selectedIcon = {
-                                Icon(Icons.Filled.Done, contentDescription = null)
-                            }
+                    Row(
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(modifier = Modifier.weight(1.2f)) {
+                            ElevatedFilterChip(
+                                selected = viewModel.itemChipSelected,
+                                onClick = {
+                                    viewModel.itemChipSelected = !viewModel.itemChipSelected
+                                    viewModel.fetchDataFromSearchText(context)
+                                },
+                                label = {
+                                    Text(text = stringResource(id = R.string.chip_item))
+                                },
+                                selectedIcon = {
+                                    Icon(Icons.Filled.Done, contentDescription = null)
+                                },
+                                modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                            )
+                            ElevatedFilterChip(
+                                selected = viewModel.stageChipSelected,
+                                onClick = {
+                                    viewModel.stageChipSelected = !viewModel.stageChipSelected
+                                    viewModel.fetchDataFromSearchText(context)
+                                },
+                                label = {
+                                    Text(text = stringResource(id = R.string.chip_stage))
+                                },
+                                selectedIcon = {
+                                    Icon(Icons.Filled.Done, contentDescription = null)
+                                },
+                                modifier = Modifier.padding(end = 10.dp)
+                            )
+                            ElevatedFilterChip(
+                                selected = viewModel.characterChipSelected,
+                                onClick = {
+                                    viewModel.characterChipSelected =
+                                        !viewModel.characterChipSelected
+                                    viewModel.fetchDataFromSearchText(context)
+                                },
+                                label = {
+                                    Text(text = stringResource(id = R.string.chip_char))
+                                },
+                                selectedIcon = {
+                                    Icon(imageVector = Icons.Filled.Done, contentDescription = null)
+                                }
+                            )
+                        }
+
+                        Text(
+                            text = "${viewModel.getTotalNumberOfSearchedItems()}",
+                            color = Color.Gray,
+                            modifier = Modifier
+                                .weight(0.2f)
+                                .padding(end = 5.dp)
                         )
                     }
                 }
@@ -120,7 +151,7 @@ fun Search(viewModel: DataViewModel) {
                             DetailActivity.ExtraTagType,
                             DetailActivity.TypeItem
                         )
-                        .putExtra(DetailActivity.ExtraDataItemOrStage, item),
+                        .putExtra(DetailActivity.ExtraData, item),
                     ActivityOptions
                         .makeSceneTransitionAnimation(context as MainActivity)
                         .toBundle()
@@ -161,23 +192,22 @@ fun Search(viewModel: DataViewModel) {
 
         }
             items(viewModel.gameStageSearchResultDataSet) { stage ->
-                ElevatedCard(
+                Column(
                     modifier = Modifier
-                        .padding(horizontal = 10.dp, vertical = 5.dp)
-                        .fillMaxWidth(),
-                    onClick = {
-                        context.startActivity(
-                            Intent(context, DetailActivity::class.java)
-                                .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeStage)
-                                .putExtra(DetailActivity.ExtraDataItemOrStage, stage)
-                        )
-                    }) {
+                        .fillMaxWidth()
+                        .clickable {
+                            context.startActivity(
+                                Intent(context, DetailActivity::class.java)
+                                    .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeStage)
+                                    .putExtra(DetailActivity.ExtraData, stage)
+                            )
+                        }) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .fillMaxSize()
                             .padding(vertical = 10.dp)
+                            .fillMaxSize()
                     ) {
                         Image(
                             Icons.Filled.Games,
@@ -200,7 +230,75 @@ fun Search(viewModel: DataViewModel) {
                             )
                         }
                     }
+                    Divider(
+                        color = DividerColor,
+                        modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)
+                    )
                 }
             }
+        items(viewModel.characterSearchResultDataSet) { character ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        context.startActivity(
+                            Intent(context, DetailActivity::class.java)
+                                .putExtra(DetailActivity.ExtraTagType, DetailActivity.TypeChar)
+                                .putExtra(DetailActivity.ExtraData, character)
+                        )
+                    }
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxSize()
+                ) {
+                    Image(
+                        painterResource(id = character.profession.getDrawableIcon()),
+                        contentDescription = null,
+                        colorFilter = if (!isSystemInDarkTheme()) ColorFilter.colorMatrix(
+                            ReverseColor
+                        ) else null,
+                        modifier = Modifier
+                            .scale(4f)
+                            .clickable {
+                                viewModel.searchText =
+                                    "prof:${context.resources.getString(character.profession.getProfessionName())}"
+                            }
+                    )
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.fillMaxWidth(0.6f)
+                    ) {
+                        Text(
+                            text = character.name,
+                            color = rarityColor(character.rarity, isSystemInDarkTheme()),
+                            fontSize = TextUnit(20f, TextUnitType.Sp),
+                            modifier = Modifier.padding(top = 5.dp)
+                        )
+                        Row {
+                            character.tagList.forEach {
+                                AssistChip(
+                                    onClick = { viewModel.searchText = "tag:$it" },
+                                    label = {
+                                        Text(
+                                            text = it,
+                                            fontSize = TextUnit(12f, TextUnitType.Sp)
+                                        )
+                                    },
+                                    modifier = Modifier.padding(end = 3.dp),
+                                )
+                            }
+                        }
+                    }
+                }
+                Divider(
+                    color = DividerColor,
+                    modifier = Modifier.padding(horizontal = Dimension.HorizontalPadding)
+                )
+            }
+        }
     }
 }

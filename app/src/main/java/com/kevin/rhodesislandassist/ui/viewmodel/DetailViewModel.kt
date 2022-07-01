@@ -3,7 +3,10 @@ package com.kevin.rhodesislandassist.ui.viewmodel
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.kevin.rhodesislandassist.DataSetRepository
@@ -11,6 +14,7 @@ import com.kevin.rhodesislandassist.R
 import com.kevin.rhodesislandassist.api.PenguinLogisticsApi
 import com.kevin.rhodesislandassist.api.models.Matrix
 import com.kevin.rhodesislandassist.api.models.MatrixResponse
+import com.kevin.rhodesislandassist.models.Character
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +30,9 @@ class DetailViewModel : ViewModel() {
         .create(PenguinLogisticsApi::class.java)
 
     var matrixes = mutableStateListOf<Matrix>()
+
+    var attr by mutableStateOf(Character.Attribute.Empty)
+
 
     private val cachedItemMatrix: MutableMap<String, MatrixResponse> = mutableMapOf()
     private val cachedStageMatrix: MutableMap<String, MatrixResponse> = mutableMapOf()
@@ -149,6 +156,29 @@ class DetailViewModel : ViewModel() {
                 Toast.makeText(context, R.string.toast_network_fail, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun initCharacterAttr(character: Character) {
+        attr = character.phases[0].attributeLevel1
+    }
+
+    fun getPhaseAndLevel(character: Character, level: Int): Pair<Int, Int> {
+        var levelVar = level
+        var phase: Int? = null
+        for (i in character.phases.indices) {
+            if (levelVar - character.phases[i].maxLevel <= 0) {
+                phase = i
+                break
+            } else {
+                levelVar -= character.phases[i].maxLevel
+            }
+        }
+        return Pair(phase!!, levelVar)
+    }
+
+    fun updateCurrentAttribute(character: Character, level: Int) {
+        val pair = getPhaseAndLevel(character, level)
+        attr = character.calculateAttribute(pair.first, pair.second)
     }
 
     private fun refreshStageWithSuffix(

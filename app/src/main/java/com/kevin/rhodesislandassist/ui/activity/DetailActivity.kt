@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.kevin.rhodesislandassist.ui.component.CharacterDetail
 import com.kevin.rhodesislandassist.ui.component.ItemDetail
 import com.kevin.rhodesislandassist.ui.component.StageDetail
 import com.kevin.rhodesislandassist.ui.theme.RhodesIslandAssistTheme
@@ -22,8 +23,9 @@ class DetailActivity : ComponentActivity() {
         const val ExtraTagType = "TYPE"
         const val TypeItem = 0
         const val TypeStage = 1
+        const val TypeChar = 2
         const val TypeError = -1
-        const val ExtraDataItemOrStage = "DATA"
+        const val ExtraData = "DATA"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,17 +45,26 @@ class DetailActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val type = intent.getIntExtra(ExtraTagType, TypeError)
-                    if (type == TypeError) finish()
-                    if (type == TypeItem) {
-                        ItemDetail(
-                            item = intent.getParcelableExtra(ExtraDataItemOrStage),
-                            viewModel
-                        )
-                    } else {
-                        StageDetail(
-                            stage = intent.getParcelableExtra(ExtraDataItemOrStage),
-                            viewModel
-                        )
+                    when (type) {
+                        TypeItem -> {
+                            ItemDetail(
+                                item = intent.getParcelableExtra(ExtraData),
+                                viewModel
+                            )
+                        }
+                        TypeStage -> {
+                            StageDetail(
+                                stage = intent.getParcelableExtra(ExtraData),
+                                viewModel
+                            )
+                        }
+                        TypeChar -> {
+                            CharacterDetail(
+                                character = intent.getParcelableExtra(ExtraData),
+                                viewModel
+                            )
+                        }
+                        TypeError -> finish()
                     }
                 }
             }

@@ -62,7 +62,7 @@ fun ItemDetailCard(stage: GameStage, matrix: Matrix, modifier: Modifier = Modifi
                                 DetailActivity.TypeStage
                             )
                             .putExtra(
-                                DetailActivity.ExtraDataItemOrStage,
+                                DetailActivity.ExtraData,
                                 stage
                             ),
                         ActivityOptions

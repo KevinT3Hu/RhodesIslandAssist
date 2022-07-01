@@ -65,4 +65,22 @@
     <string name="title_refresh_tables">Refresh game data</string>
     <string name="toast_refreshed_today">You have already refreshed today</string>
     <string name="toast_refresh">Refresh</string>
+    <string name="chip_char">Character</string>
+    <string name="prof_medic">Medic</string>
+    <string name="prof_caster">Caster</string>
+    <string name="prof_pioneer">Pioneer</string>
+    <string name="prof_warrior">Warrior</string>
+    <string name="prof_sniper">Sniper</string>
+    <string name="prof_tank">Tank</string>
+    <string name="prof_support">Support</string>
+    <string name="prof_special">Special</string>
+    <string name="text_phase">Phase</string>
+    <string name="text_level">Level</string>
+    <string name="title_max_hp">Max HP</string>
+    <string name="title_atk">Attack</string>
+    <string name="title_def">Defense</string>
+    <string name="title_magic_resistance">Magic Resistance</string>
+    <string name="title_cost">Cost</string>
+    <string name="title_respawn_time">Respawn Time</string>
+    <string name="title_atk_speed">Attack Speed</string>
 </resources>

@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.google.gson.GsonBuilder
 import com.kevin.rhodesislandassist.R
@@ -13,6 +12,7 @@ import com.kevin.rhodesislandassist.api.GachaApi
 import com.kevin.rhodesislandassist.api.models.Card
 import com.kevin.rhodesislandassist.api.models.GachaResponse
 import com.kevin.rhodesislandassist.ui.component.widget.PieSlice
+import com.kevin.rhodesislandassist.ui.theme.rarityColor
 import com.kevin.rhodesislandassist.util.GachaResponseDeserializer
 import retrofit2.Call
 import retrofit2.Callback
@@ -145,11 +145,5 @@ class GachaViewModel : ViewModel() {
         pieSlicesFiltered.addAll(pieSlices)
     }
 
-    fun getRarityColor(rarity: Int) = when (rarity) {
-        2 -> Color.Gray
-        3 -> Color(147, 112, 219)
-        4 -> Color.Red
-        5 -> Color(255, 140, 0)
-        else -> Color.White
-    }
+    fun getRarityColor(rarity: Int) = rarityColor(rarity)
 }

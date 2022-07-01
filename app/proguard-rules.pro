@@ -1,3 +1,1 @@
--keep class com.kevin.rhodesislandassist.models.GameStage{ *; }
--keep class com.kevin.rhodesislandassist.models.GameItem{ *; }
 -keep class com.kevin.rhodesislandassist.api.models.*{ *; }

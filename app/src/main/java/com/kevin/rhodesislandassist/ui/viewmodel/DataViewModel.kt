@@ -8,9 +8,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kevin.rhodesislandassist.DataSetRepository.characterDataSet
 import com.kevin.rhodesislandassist.DataSetRepository.gameItemDataSet
 import com.kevin.rhodesislandassist.DataSetRepository.gameStageDataSet
 import com.kevin.rhodesislandassist.R
+import com.kevin.rhodesislandassist.models.Character
 import com.kevin.rhodesislandassist.models.GameItem
 import com.kevin.rhodesislandassist.models.GameStage
 import com.kevin.rhodesislandassist.util.json.initData
@@ -22,10 +24,12 @@ class DataViewModel : ViewModel() {
 
     var itemChipSelected by mutableStateOf(true)
     var stageChipSelected by mutableStateOf(true)
+    var characterChipSelected by mutableStateOf(true)
 
     var searchText by mutableStateOf("")
     var gameItemSearchResultDataSet = mutableStateListOf<GameItem>()
     var gameStageSearchResultDataSet = mutableStateListOf<GameStage>()
+    var characterSearchResultDataSet = mutableStateListOf<Character>()
 
     fun initDataSet(context: Context, forceRefresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,25 +42,70 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    fun fetchDataFromSearchText() {
+    fun fetchDataFromSearchText(context: Context) {
         gameItemSearchResultDataSet.clear()
         gameStageSearchResultDataSet.clear()
+        characterSearchResultDataSet.clear()
         if (itemChipSelected) {
-            gameItemDataSet?.forEach { gameItem ->
-                if (gameItem.value.name!!.contains(searchText)) {
-                    gameItemSearchResultDataSet.add(gameItem.value)
+            gameItemDataSet?.forEach { (_, gameItem) ->
+                if (gameItem.name!!.contains(searchText)) {
+                    gameItemSearchResultDataSet.add(gameItem)
                 }
             }
         }
         if (stageChipSelected) {
-            gameStageDataSet?.forEach { gameStage ->
-                if (gameStage.value.name!!.contains(searchText) || gameStage.value.code!!.contains(
+            gameStageDataSet?.forEach { (_, gameStage) ->
+                if (gameStage.name!!.contains(searchText) || gameStage.code!!.contains(
                         searchText
                     )
                 ) {
-                    gameStageSearchResultDataSet.add(gameStage.value)
+                    gameStageSearchResultDataSet.add(gameStage)
+                }
+            }
+        }
+        if (characterChipSelected) {
+            if (searchText.startsWith("tag:", ignoreCase = true)) {
+                val tag = searchText.split(":")[1]
+                characterDataSet?.forEach { (_, character) ->
+                    if (character.tagList.contains(tag)) {
+                        characterSearchResultDataSet.add(character)
+                    }
+                }
+            } else if (searchText.startsWith("rarity:", ignoreCase = true)) {
+                var rarity = 0
+                try {
+                    rarity = searchText.split(":")[1].toInt()
+                } catch (e: NumberFormatException) {
+                    return
+                }
+                characterDataSet?.forEach { (_, character) ->
+                    if (character.rarity + 1 == rarity) {
+                        characterSearchResultDataSet.add(character)
+                    }
+                }
+            } else if (searchText.startsWith("prof", true) || searchText.startsWith(
+                    "profession",
+                    true
+                )
+            ) {
+                val prof = searchText.split(":")[1]
+                characterDataSet?.forEach { (_, character) ->
+                    if (context.resources.getString(character.profession.getProfessionName()) == prof) {
+                        characterSearchResultDataSet.add(character)
+                    }
+                }
+            } else {
+                characterDataSet?.forEach { (name, character) ->
+                    if (name.contains(searchText)) {
+                        characterSearchResultDataSet.add(character)
+                    }
                 }
             }
         }
     }
+
+    fun getTotalNumberOfSearchedItems() =
+        (if (itemChipSelected) gameItemSearchResultDataSet.size else 0) +
+                (if (stageChipSelected) gameStageSearchResultDataSet.size else 0) +
+                (if (characterChipSelected) characterSearchResultDataSet.size else 0)
 }
